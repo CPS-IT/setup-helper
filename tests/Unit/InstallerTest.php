@@ -20,9 +20,11 @@ namespace Fr\ProjectBuilder\Tests\Unit;
 
 use Composer\Composer;
 use Composer\Config;
+use Composer\Package\RootPackageInterface;
 use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
 use Fr\ProjectBuilder\Installer;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class InstallerTest extends TestCase
@@ -53,11 +55,15 @@ class InstallerTest extends TestCase
 
     public function testPerformTasks()
     {
-        $config = $this->getMockBuilder(Config::class)
-            ->getMock();
+        $extra = [];
+        $package = $this->getMockBuilder(RootPackageInterface::class)
+            ->setMethods(['getExtra'])
+            ->getMockForAbstractClass();
+
         $composer = $this->getMockBuilder(Composer::class)
-            ->setMethods(['getConfig'])
+            ->setMethods(['getPackage'])
             ->getMock();
+        /** @var Event|MockObject $composerEvent */
         $composerEvent = $this->getMockBuilder(Event::class)
             ->disableOriginalConstructor()
             ->setMethods(['getComposer'])
@@ -67,9 +73,11 @@ class InstallerTest extends TestCase
             ->method('getComposer')
             ->willReturn($composer);
         $composer->expects($this->once())
-            ->method('getConfig')
-            ->willReturn($config);
-
+            ->method('getPackage')
+            ->willReturn($package);
+        $package->expects($this->once())
+            ->method('getExtra')
+            ->willReturn($extra);
         Installer::performTasks($composerEvent);
     }
 }

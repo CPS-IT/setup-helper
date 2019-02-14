@@ -21,5 +21,6 @@ namespace Fr\ProjectBuilder\Report;
 
 class Success extends Result
 {
-    protected $status = ResultInterface::STATUS_SUCCESS;
+    protected /** @noinspection ClassOverridesFieldOfSuperClassInspection */
+        $status = ResultInterface::STATUS_SUCCESS;
 }

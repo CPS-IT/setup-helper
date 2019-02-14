@@ -1,6 +1,6 @@
 <?php
 
-namespace Fr\ProjectBuilder\Report;
+namespace Fr\ProjectBuilder\Task;
 
 /***************************************************************
  *  Copyright notice
@@ -19,8 +19,10 @@ namespace Fr\ProjectBuilder\Report;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-class Warning extends Result
+class Rename implements TaskInterface
 {
-    protected /** @noinspection ClassOverridesFieldOfSuperClassInspection */
-        $status = ResultInterface::STATUS_WARNING;
+    public function perform(array $config)
+    {
+        // TODO: Implement perform() method.
+    }
 }

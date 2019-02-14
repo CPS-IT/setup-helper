@@ -1,6 +1,6 @@
 <?php
 
-namespace Fr\ProjectBuilder\Report;
+namespace Fr\ProjectBuilder\Task;
 
 /***************************************************************
  *  Copyright notice
@@ -19,8 +19,30 @@ namespace Fr\ProjectBuilder\Report;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-class Warning extends Result
+use Fr\ProjectBuilder\Report\Notice;
+use Fr\ProjectBuilder\Report\Result;
+use Fr\ProjectBuilder\Report\ResultInterface;
+
+/**
+ * Class Unlink
+ *
+ * unlink given files and folders
+ */
+class Unlink implements TaskInterface
 {
-    protected /** @noinspection ClassOverridesFieldOfSuperClassInspection */
-        $status = ResultInterface::STATUS_WARNING;
+    /**
+     * @param array $config
+     * @return ResultInterface
+     */
+    public function perform(array $config)
+    {
+        $result = new Result();
+        if (empty($config)) {
+            $result = new Notice(
+                TaskInterface::MESSAGE_EMPTY_CONFIGURATION,
+                1550153594
+            );
+        }
+        return $result;
+    }
 }

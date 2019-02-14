@@ -25,6 +25,11 @@ use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
+use Fr\ProjectBuilder\Report\Error;
+use Fr\ProjectBuilder\SettingsInterface as SI;
+use Fr\ProjectBuilder\Task\Rename;
+use Fr\ProjectBuilder\Task\TaskInterface;
+use Fr\ProjectBuilder\Task\Unlink;
 
 /**
  * Class Installer
@@ -33,11 +38,17 @@ final class Installer implements PluginInterface, EventSubscriberInterface
 {
 
     const ENTRY_METHOD_NAME = 'performTasks';
+    const TASKS_TO_PERFORM = [
+        SI::UNLINK_TASK_KEY => Unlink::class,
+        SI::RENAME_TASK_KEY => Rename::class
+    ];
+
+    const MESSAGE_INVALID_TASK_KEY = 'Invalid key "%" for task in extra.' . SI::INSTALLER_EXTRA_KEY;
 
     /**
      * {@inheritDoc}
      */
-    public function activate(Composer $composer, IOInterface $io): void
+    public function activate(Composer $composer, IOInterface $io)
     {
         // Nothing to do here, as all features are provided through event listeners
     }
@@ -59,7 +70,28 @@ final class Installer implements PluginInterface, EventSubscriberInterface
     public static function performTasks(Event $composerEvent)
     {
         $composer = $composerEvent->getComposer();
-        $composer->getConfig();
+        $extra = $composer->getPackage()->getExtra();
+        if (!empty($extra[SI::INSTALLER_EXTRA_KEY])) {
+            foreach ($extra[SI::INSTALLER_EXTRA_KEY] as $taskName => $config) {
+                if (\is_array($config)) {
+                    static::performSingleTask($taskName, $config);
+                }
+            }
+        }
+    }
+
+    private static function performSingleTask(string $taskName, array $config)
+    {
+        if (!\in_array($taskName, static::TASKS_TO_PERFORM, true))
+        {
+            return new Error(
+                sprintf(static::MESSAGE_INVALID_TASK_KEY, $taskName),
+                1550161722
+            );
+        }
+        /** @var TaskInterface $task */
+        $task = new $taskName();
+        return $task->perform($config);
     }
 
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Fr\ProjectBuilder\Report;
+namespace Fr\ProjectBuilder;
 
 /***************************************************************
  *  Copyright notice
@@ -18,9 +18,9 @@ namespace Fr\ProjectBuilder\Report;
  * GNU General Public License for more details.
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-class Warning extends Result
+interface SettingsInterface
 {
-    protected /** @noinspection ClassOverridesFieldOfSuperClassInspection */
-        $status = ResultInterface::STATUS_WARNING;
+    const INSTALLER_EXTRA_KEY = 'project-builder';
+    const UNLINK_TASK_KEY = 'unlink';
+    const RENAME_TASK_KEY = 'rename';
 }

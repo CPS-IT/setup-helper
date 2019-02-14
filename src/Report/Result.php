@@ -48,7 +48,7 @@ class Result implements ResultInterface
     /**
      * {@inheritdoc}
      */
-    public function getStatus()
+    public function getStatus():string
     {
         return $this->status;
     }
@@ -64,7 +64,7 @@ class Result implements ResultInterface
     /**
      * @return int
      */
-    public function getId()
+    public function getId():int
     {
         return $this->id;
     }
