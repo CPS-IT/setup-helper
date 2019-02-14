@@ -20,18 +20,11 @@ namespace Fr\ProjectBuilder;
  ***************************************************************/
 
 use Composer\Composer;
-use Composer\Config;
 use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\IO\IOInterface;
-use Composer\Package\AliasPackage;
-use Composer\Package\Locker;
-use Composer\Package\PackageInterface;
-use Composer\Package\RootPackageInterface;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
-use CPSIT\Auditor\Generator\BundleDescriberClassGenerator;
-use CPSIT\Auditor\Reflection\RootPackageReflection;
 
 /**
  * Class Installer
@@ -39,7 +32,7 @@ use CPSIT\Auditor\Reflection\RootPackageReflection;
 final class Installer implements PluginInterface, EventSubscriberInterface
 {
 
-    public const ENTRY_METHOD_NAME = 'performTasks';
+    const ENTRY_METHOD_NAME = 'performTasks';
 
     /**
      * {@inheritDoc}
@@ -66,6 +59,7 @@ final class Installer implements PluginInterface, EventSubscriberInterface
     public static function performTasks(Event $composerEvent)
     {
         $composer = $composerEvent->getComposer();
+        $composer->getConfig();
     }
 
 }
