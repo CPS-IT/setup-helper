@@ -72,10 +72,15 @@ final class Installer implements PluginInterface, EventSubscriberInterface
             return;
         }
 
-        foreach ($extra[SI::INSTALLER_EXTRA_KEY] as $taskName => $config) {
-            if (\is_array($config)) {
-                $result = static::performSingleTask($taskName, $config);
-                $io->write($result->getMessage());
+        foreach ($extra[SI::INSTALLER_EXTRA_KEY] as $entry) {
+            if (!\is_array($entry)) {
+                continue;
+            }
+            foreach ($entry as $taskName => $config) {
+                if (\is_array($config)) {
+                    $result = static::performSingleTask($taskName, $config);
+                    $io->write($result->getMessage());
+                }
             }
         }
     }

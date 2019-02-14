@@ -87,7 +87,7 @@ class InstallerTest extends TestCase
             'invalid task name' => [
                 [
                     SI::INSTALLER_EXTRA_KEY => [
-                        $invalidTaskKey => []
+                        [$invalidTaskKey => []]
                     ]
                 ],
                 sprintf(Installer::MESSAGE_INVALID_TASK_KEY, $invalidTaskKey)
@@ -95,7 +95,7 @@ class InstallerTest extends TestCase
             'unlink: file not found' => [
                 [
                     SI::INSTALLER_EXTRA_KEY => [
-                        SI::UNLINK_TASK_KEY => [$nonExistingFilePath]
+                        [SI::UNLINK_TASK_KEY => [$nonExistingFilePath]]
                     ]
                 ],
                 sprintf(Unlink::MESSAGE_FILE_NOT_FOUND, $nonExistingFilePath)
@@ -103,7 +103,7 @@ class InstallerTest extends TestCase
             'unlink: file deleted' => [
                 [
                     SI::INSTALLER_EXTRA_KEY => [
-                        SI::UNLINK_TASK_KEY => [$this->fileName]
+                        [SI::UNLINK_TASK_KEY => [$this->fileName]]
                     ]
                 ],
                 sprintf(Unlink::MESSAGE_FILE_DELETED, $this->fileName)
