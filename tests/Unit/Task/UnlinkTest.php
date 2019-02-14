@@ -56,9 +56,10 @@ class UnlinkTest extends TestCase
 
     public function testResultForEmptyConfigReturnsMessage()
     {
+        $expectedMessage = get_class($this->subject) . ': ' . TaskInterface::MESSAGE_EMPTY_CONFIGURATION;
         $result = $this->subject->perform([]);
         $this->assertSame(
-            TaskInterface::MESSAGE_EMPTY_CONFIGURATION,
+            $expectedMessage,
             $result->getMessage()
         );
     }

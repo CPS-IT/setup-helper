@@ -19,11 +19,13 @@
 namespace Fr\ProjectBuilder\Tests\Unit;
 
 use Composer\Composer;
-use Composer\Config;
+use Composer\IO\IOInterface;
 use Composer\Package\RootPackageInterface;
 use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
 use Fr\ProjectBuilder\Installer;
+use Fr\ProjectBuilder\SettingsInterface as SI;
+use Fr\ProjectBuilder\Task\Unlink;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -34,9 +36,28 @@ class InstallerTest extends TestCase
      */
     protected $subject;
 
+    /**
+     * @var string
+     */
+    protected $fileName = '5dede1ee63ddef35a178de1b38b91ef69b5b437d96bcc3220e59c30d39d8ba86';
+
+    /**
+     * @var bool|resource
+     */
+    protected $fileHandle;
+
+
     public function setUp()/* The :void return type declaration that should be here would cause a BC issue */
     {
         $this->subject = new Installer();
+        $this->fileHandle = fopen($this->fileName, 'ab');
+        fwrite($this->fileHandle, 'foo');
+        fclose($this->fileHandle);
+    }
+
+    public function tearDown()/* The :void return type declaration that should be here would cause a BC issue */
+    {
+
     }
 
     public function testGetSubscribedEvents()
@@ -53,11 +74,56 @@ class InstallerTest extends TestCase
         );
     }
 
-    public function testPerformTasks()
+    public function performTasksDataProvider()
     {
-        $extra = [];
+        $invalidTaskKey = 'invalidFooTask';
+        $nonExistingFilePath = '7cd1e9d0f2ac1b9c7c65f3fb7c85962c6ed774196c4470af4f92a17ab0983338';
+
+        return [
+            // extra,
+            'empty extra' => [
+                [], Installer::MESSAGE_NO_CONFIGURATION
+            ],
+            'invalid task name' => [
+                [
+                    SI::INSTALLER_EXTRA_KEY => [
+                        $invalidTaskKey => []
+                    ]
+                ],
+                sprintf(Installer::MESSAGE_INVALID_TASK_KEY, $invalidTaskKey)
+            ],
+            'unlink: file not found' => [
+                [
+                    SI::INSTALLER_EXTRA_KEY => [
+                        SI::UNLINK_TASK_KEY => [$nonExistingFilePath]
+                    ]
+                ],
+                sprintf(Unlink::MESSAGE_FILE_NOT_FOUND, $nonExistingFilePath)
+            ],
+            'unlink: file deleted' => [
+                [
+                    SI::INSTALLER_EXTRA_KEY => [
+                        SI::UNLINK_TASK_KEY => [$this->fileName]
+                    ]
+                ],
+                sprintf(Unlink::MESSAGE_FILE_DELETED, $this->fileName)
+            ]
+        ];
+
+    }
+
+    /**
+     * @param array $extra
+     * @param string $expectedMessage
+     * @dataProvider performTasksDataProvider
+     */
+    public function testPerformTasks(array $extra, string $expectedMessage)
+    {
         $package = $this->getMockBuilder(RootPackageInterface::class)
             ->setMethods(['getExtra'])
+            ->getMockForAbstractClass();
+        $io = $this->getMockBuilder(IOInterface::class)
+            ->setMethods(['write'])
             ->getMockForAbstractClass();
 
         $composer = $this->getMockBuilder(Composer::class)
@@ -66,8 +132,11 @@ class InstallerTest extends TestCase
         /** @var Event|MockObject $composerEvent */
         $composerEvent = $this->getMockBuilder(Event::class)
             ->disableOriginalConstructor()
-            ->setMethods(['getComposer'])
+            ->setMethods(['getComposer', 'getIo'])
             ->getMock();
+        $composerEvent->expects($this->once())
+            ->method('getIo')
+            ->willReturn($io);
 
         $composerEvent->expects($this->once())
             ->method('getComposer')
@@ -78,6 +147,10 @@ class InstallerTest extends TestCase
         $package->expects($this->once())
             ->method('getExtra')
             ->willReturn($extra);
+        $io->expects($this->once())
+            ->method('write')
+            ->with($expectedMessage);
+
         Installer::performTasks($composerEvent);
     }
 }

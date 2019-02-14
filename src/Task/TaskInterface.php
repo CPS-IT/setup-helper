@@ -1,5 +1,4 @@
 <?php
-
 namespace Fr\ProjectBuilder\Task;
 
 /***************************************************************
@@ -18,13 +17,18 @@ namespace Fr\ProjectBuilder\Task;
  * GNU General Public License for more details.
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use Fr\ProjectBuilder\Report\ResultInterface;
+
+/**
+ * Interface TaskInterface
+ */
 interface TaskInterface
 {
     const MESSAGE_EMPTY_CONFIGURATION = 'The given configuration is empty';
 
     /**
      * @param array $config
-     * @return mixed
+     * @return ResultInterface
      */
     public function perform(array $config);
 }
