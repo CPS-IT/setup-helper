@@ -1,0 +1,40 @@
+# see https://github.com/geertw/docker-php-ci for details
+image: geertw/docker-php-ci:7.2
+
+variables:
+  GIT_STRATEGY: clone
+  COMPOSER_CACHE_DIR: /cache/composer
+  COMPOSER_ALLOW_SUPERUSER: 1
+  COMPOSER_NO_INTERACTION: 1
+  COMPOSER_PARAMS: --no-progress --optimize-autoloader --prefer-dist
+
+before_script:
+  # run external before_script
+  - mkdir -p ~/.ssh
+  - chmod 700 ~/.ssh
+  - echo "$KNOWN_HOSTS" > ~/.ssh/known_hosts
+  - git config --global user.email "fr.deploy@familie-redlich.de"
+  - git config --global user.name "fr.deploy"
+  # Run ssh-agent (inside the build environment)
+  - eval $(ssh-agent -s)
+  # Add the SSH key stored in SSH_PRIVATE_KEY variable to the agent store
+  - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+
+stages:
+  - build
+  - test
+  - deploy
+
+build:
+  stage: build
+  script:
+    - composer global require hirak/prestissimo
+    - composer install $COMPOSER_PARAMS
+  artifacts:
+    paths:
+      - .build/
+
+test:unit:
+  stage: test
+  script:
+    - .build/bin/phpunit tests/Unit
