@@ -40,7 +40,7 @@ final class Installer implements PluginInterface, EventSubscriberInterface
     const ENTRY_METHOD_NAME = 'performTasks';
     const TASKS_TO_PERFORM = [
         SI::UNLINK_TASK_KEY => Unlink::class,
-        SI::RENAME_TASK_KEY => Move::class
+        SI::MOVE_TASK_KEY => Move::class
     ];
     const MESSAGE_NO_CONFIGURATION = '<info>No configuration found for project-builder in extra section of composer.json</info>';
 
