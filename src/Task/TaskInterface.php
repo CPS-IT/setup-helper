@@ -17,7 +17,7 @@ namespace Fr\ProjectBuilder\Task;
  * GNU General Public License for more details.
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use Fr\ProjectBuilder\Report\ResultInterface;
+use Composer\IO\IOInterface;
 
 /**
  * Interface TaskInterface
@@ -25,10 +25,22 @@ use Fr\ProjectBuilder\Report\ResultInterface;
 interface TaskInterface
 {
     const MESSAGE_EMPTY_CONFIGURATION = 'The given configuration is empty';
+    const MESSAGE_RESOURCE_UNAVAILABLE = 'Could not delete file: %s. Please close all applications that are using it.';
+    const MESSAGE_FILE_NOT_FOUND = 'File or folder %s not found';
+    const MESSAGE_FILE_DELETED = 'File %s deleted';
+    const MESSAGE_FILE_MOVED = 'File moved from %s to %s';
 
     /**
+     * Constructor for Tasks
+     *
+     * TaskInterface constructor.
+     * @param IOInterface $IO
      * @param array $config
-     * @return ResultInterface
      */
-    public function perform(array $config);
+    public function __construct(IOInterface $IO, array $config = []);
+
+    /**
+     * @return void
+     */
+    public function perform();
 }

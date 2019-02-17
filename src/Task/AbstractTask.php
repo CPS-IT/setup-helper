@@ -1,11 +1,13 @@
 <?php
 
 namespace Fr\ProjectBuilder\Task;
+use Composer\IO\IOInterface;
+
 
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2019 Dirk Wenzel <wenzel@cps-it.de>
+ *  (c) 2019 Dirk Wenzel
  *  All rights reserved
  *
  * The GNU General Public License can be found at
@@ -18,11 +20,43 @@ namespace Fr\ProjectBuilder\Task;
  * GNU General Public License for more details.
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-class Rename implements TaskInterface
+class AbstractTask
 {
-    public function perform(array $config)
+    /**
+     * @var IOInterface
+     */
+    protected $io;
+
+    /**
+     * @var array
+     */
+    protected $config;
+
+    /**
+     * AbstractTask constructor.
+     * @param IOInterface $IO
+     * @param $config
+     */
+    public function __construct(IOInterface $IO, array $config = [])
     {
-        // TODO: Implement perform() method.
+        $this->io = $IO;
+        $this->config = $config;
     }
+
+    /**
+     * @return IOInterface
+     */
+    public function getIo()
+    {
+        return $this->io;
+    }
+
+    /**
+     * @return array
+     */
+    public function getConfig()
+    {
+        return $this->config;
+    }
+
 }

@@ -28,7 +28,7 @@ use Composer\Script\ScriptEvents;
 use Fr\ProjectBuilder\Report\Error;
 use Fr\ProjectBuilder\Report\ResultInterface;
 use Fr\ProjectBuilder\SettingsInterface as SI;
-use Fr\ProjectBuilder\Task\Rename;
+use Fr\ProjectBuilder\Task\Move;
 use Fr\ProjectBuilder\Task\TaskInterface;
 use Fr\ProjectBuilder\Task\Unlink;
 
@@ -37,11 +37,10 @@ use Fr\ProjectBuilder\Task\Unlink;
  */
 final class Installer implements PluginInterface, EventSubscriberInterface
 {
-
     const ENTRY_METHOD_NAME = 'performTasks';
     const TASKS_TO_PERFORM = [
         SI::UNLINK_TASK_KEY => Unlink::class,
-        SI::RENAME_TASK_KEY => Rename::class
+        SI::RENAME_TASK_KEY => Move::class
     ];
     const MESSAGE_NO_CONFIGURATION = '<info>No configuration found for project-builder in extra section of composer.json</info>';
 
@@ -78,8 +77,7 @@ final class Installer implements PluginInterface, EventSubscriberInterface
             }
             foreach ($entry as $taskName => $config) {
                 if (\is_array($config)) {
-                    $result = static::performSingleTask($taskName, $config);
-                    $io->write($result->getMessage());
+                    static::performSingleTask($taskName, $config, $io);
                 }
             }
         }
@@ -90,21 +88,24 @@ final class Installer implements PluginInterface, EventSubscriberInterface
      *
      * @param string $taskName
      * @param array $config
-     * @return ResultInterface
+     * @param IOInterface $io
+     * @return void
      */
-    private static function performSingleTask(string $taskName, array $config)
+    private static function performSingleTask(string $taskName, array $config, $io)
     {
         if (!\array_key_exists($taskName, static::TASKS_TO_PERFORM)) {
-            return new Error(
-                sprintf(static::MESSAGE_INVALID_TASK_KEY, $taskName),
-                1550161722
+            $io->writeError(
+                sprintf(static::MESSAGE_INVALID_TASK_KEY, $taskName)
             );
+
+            return;
         }
+
         $taskClass = self::TASKS_TO_PERFORM[$taskName];
 
         /** @var TaskInterface $task */
-        $task = new $taskClass();
-        return $task->perform($config);
+        $task = new $taskClass($io, $config);
+        $task->perform();
     }
 
     /**

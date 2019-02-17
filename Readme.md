@@ -45,13 +45,13 @@ Add a key `project-builder` to to the `extra` section of your `composer.json`.
 * there is **no confirmation request**. Any existing file or folder will be removed!
 
 
-### Rename files or folders (not implemeted yet)
+### Move files or folders
 ```json
 {
   "extra": {
     "project-builder": [
       {
-        "rename": {
+        "move": {
           "path/to/old/file/or/folder": "path/to/new/file/or/folder",
           "other/file": "new/path"
         }

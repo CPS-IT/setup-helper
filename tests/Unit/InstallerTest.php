@@ -25,7 +25,7 @@ use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
 use Fr\ProjectBuilder\Installer;
 use Fr\ProjectBuilder\SettingsInterface as SI;
-use Fr\ProjectBuilder\Task\Unlink;
+use Fr\ProjectBuilder\Task\TaskInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -57,6 +57,9 @@ class InstallerTest extends TestCase
 
     public function tearDown()/* The :void return type declaration that should be here would cause a BC issue */
     {
+        if (is_file($this->fileName)) {
+            unlink($this->fileName);
+        }
 
     }
 
@@ -76,7 +79,6 @@ class InstallerTest extends TestCase
 
     public function performTasksDataProvider()
     {
-        $invalidTaskKey = 'invalidFooTask';
         $nonExistingFilePath = '7cd1e9d0f2ac1b9c7c65f3fb7c85962c6ed774196c4470af4f92a17ab0983338';
 
         return [
@@ -84,21 +86,13 @@ class InstallerTest extends TestCase
             'empty extra' => [
                 [], Installer::MESSAGE_NO_CONFIGURATION
             ],
-            'invalid task name' => [
-                [
-                    SI::INSTALLER_EXTRA_KEY => [
-                        [$invalidTaskKey => []]
-                    ]
-                ],
-                sprintf(Installer::MESSAGE_INVALID_TASK_KEY, $invalidTaskKey)
-            ],
             'unlink: file not found' => [
                 [
                     SI::INSTALLER_EXTRA_KEY => [
                         [SI::UNLINK_TASK_KEY => [$nonExistingFilePath]]
                     ]
                 ],
-                sprintf(Unlink::MESSAGE_FILE_NOT_FOUND, $nonExistingFilePath)
+                sprintf(TaskInterface::MESSAGE_FILE_NOT_FOUND, $nonExistingFilePath)
             ],
             'unlink: file deleted' => [
                 [
@@ -106,24 +100,29 @@ class InstallerTest extends TestCase
                         [SI::UNLINK_TASK_KEY => [$this->fileName]]
                     ]
                 ],
-                sprintf(Unlink::MESSAGE_FILE_DELETED, $this->fileName)
+                sprintf(TaskInterface::MESSAGE_FILE_DELETED, $this->fileName)
             ]
         ];
 
     }
 
-    /**
-     * @param array $extra
-     * @param string $expectedMessage
-     * @dataProvider performTasksDataProvider
-     */
-    public function testPerformTasks(array $extra, string $expectedMessage)
+
+    public function testPerformTaskWritesErrorForInvalidTaskKeyInConfig()
     {
+        $invalidTaskKey = 'invalidFooTask';
+
+        $extra = [
+            SI::INSTALLER_EXTRA_KEY => [
+                [$invalidTaskKey => []]
+            ]
+        ];
+        $expectedMessage = sprintf(Installer::MESSAGE_INVALID_TASK_KEY, $invalidTaskKey);
+
         $package = $this->getMockBuilder(RootPackageInterface::class)
             ->setMethods(['getExtra'])
             ->getMockForAbstractClass();
         $io = $this->getMockBuilder(IOInterface::class)
-            ->setMethods(['write'])
+            ->setMethods(['write', 'writeError'])
             ->getMockForAbstractClass();
 
         $composer = $this->getMockBuilder(Composer::class)
@@ -148,8 +147,47 @@ class InstallerTest extends TestCase
             ->method('getExtra')
             ->willReturn($extra);
         $io->expects($this->once())
-            ->method('write')
+            ->method('writeError')
             ->with($expectedMessage);
+
+        Installer::performTasks($composerEvent);
+    }
+
+    /**
+     * @param array $extra
+     * @param string $expectedMessage
+     * @dataProvider performTasksDataProvider
+     */
+    public function testPerformTasks(array $extra, string $expectedMessage)
+    {
+        $package = $this->getMockBuilder(RootPackageInterface::class)
+            ->setMethods(['getExtra'])
+            ->getMockForAbstractClass();
+        $io = $this->getMockBuilder(IOInterface::class)
+            ->setMethods(['write', 'writeError'])
+            ->getMockForAbstractClass();
+
+        $composer = $this->getMockBuilder(Composer::class)
+            ->setMethods(['getPackage'])
+            ->getMock();
+        /** @var Event|MockObject $composerEvent */
+        $composerEvent = $this->getMockBuilder(Event::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['getComposer', 'getIo'])
+            ->getMock();
+        $composerEvent->expects($this->once())
+            ->method('getIo')
+            ->willReturn($io);
+
+        $composerEvent->expects($this->once())
+            ->method('getComposer')
+            ->willReturn($composer);
+        $composer->expects($this->once())
+            ->method('getPackage')
+            ->willReturn($package);
+        $package->expects($this->once())
+            ->method('getExtra')
+            ->willReturn($extra);
 
         Installer::performTasks($composerEvent);
     }
