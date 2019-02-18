@@ -1,4 +1,8 @@
-2019-02-15         [RELEASE] Release of project-builder 0.1.0 (Dirk Wenzel)
+2019-02-18         [RELEASE] Release of project-builder 0.2.0 (Dirk Wenzel)
+2019-02-17 dbe3817 [TASK] require naucon/file (Dirk Wenzel)
+2019-02-17 1fbfb03 [BUGFIX] constant name in SettingsInferface corrected (Dirk Wenzel)
+2019-02-17 6d234da [TASK] Task/Move implemented, existing Tasks refactored - use Composer/IOInterface instead of Result (Dirk Wenzel)
+2019-02-15 6cfdf3b [RELEASE] Release of project-builder 0.1.0 (Dirk Wenzel) (Dirk Wenzel)
 2019-02-15 54df1b1 [TASK] Readme added (Dirk Wenzel)
 2019-02-14 8d22e1a [BUGFIX] fixed error caused by invalid configuration structure in Installer (Dirk Wenzel)
 2019-02-14 59f640f [TASK] Task/Unlink implemented (Dirk Wenzel)
@@ -8,4 +12,12 @@
 2019-02-14 af07c7f [TASK] Installer added (Dirk Wenzel)
 2019-02-14 4c0f579 [TASK] composer.json added (Dirk Wenzel)
 
-
+2019-02-15         [RELEASE] Release of project-builder 0.1.0 (Dirk Wenzel)
+2019-02-15 54df1b1 [TASK] Readme added (Dirk Wenzel)
+2019-02-14 8d22e1a [BUGFIX] fixed error caused by invalid configuration structure in Installer (Dirk Wenzel)
+2019-02-14 59f640f [TASK] Task/Unlink implemented (Dirk Wenzel)
+2019-02-14 ac5f984 [TASK] SettingsInterface added, task Rename and Unlink implemented (WIP) (Dirk Wenzel)
+2019-02-14 420f399 [CI] configuration for build and test job added (Dirk Wenzel)
+2019-02-14 8e07872 [TASK] Report classes and TaskInterface implemented (Dirk Wenzel)
+2019-02-14 af07c7f [TASK] Installer added (Dirk Wenzel)
+2019-02-14 4c0f579 [TASK] composer.json added (Dirk Wenzel)

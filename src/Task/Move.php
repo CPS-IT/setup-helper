@@ -21,16 +21,8 @@ namespace Fr\ProjectBuilder\Task;
 
 use Naucon\File\File;
 
-/**
- * Class Unlink
- *
- * unlink given files and folders
- */
-class Unlink extends AbstractTask implements TaskInterface
+class Move extends AbstractTask implements TaskInterface
 {
-    /**
-     * @return void
-     */
     public function perform()
     {
         $config = $this->getConfig();
@@ -39,10 +31,9 @@ class Unlink extends AbstractTask implements TaskInterface
                 get_class($this) . ': ' . TaskInterface::MESSAGE_EMPTY_CONFIGURATION
             );
         }
-
-        foreach ($config as $filePath) {
+        foreach ($config as $source => $target) {
             try {
-                $this->removeFile($filePath);
+                $this->move($source, $target);
             } catch (\Exception $exception) {
                 $this->io->writeError($exception->getMessage());
             }
@@ -50,25 +41,31 @@ class Unlink extends AbstractTask implements TaskInterface
     }
 
     /**
-     * @param $filePath
+     * @param string $source
+     * @param string $target
      * @return string
      * @throws \Exception
      */
-    protected function removeFile($filePath)
+    protected function move(string $source, string $target)
     {
-        $file = new File($filePath);
-        if (!$file->exists()) {
-            $this->io->writeError(
+        $sourceFile = new File($source);
+
+        if (!$sourceFile->exists()) {
+            $this->io->write(
                 sprintf(
                     TaskInterface::MESSAGE_FILE_NOT_FOUND,
-                    $filePath
+                    $sourceFile->getAbsolutePath()
                 )
             );
-
-            return;
         }
 
-        $file->delete();
-        $this->io->write(sprintf(TaskInterface::MESSAGE_FILE_DELETED, $filePath));
+        $sourceFile->move($target);
+        $this->io->write(
+            sprintf(
+                TaskInterface::MESSAGE_FILE_MOVED,
+                $source, $target
+            )
+        );
     }
+
 }

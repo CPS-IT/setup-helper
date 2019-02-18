@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2019 Dirk Wenzel <wenzel@cps-it.de>
+ *  (c) 2019 Dirk Wenzel
  *  All rights reserved
  *
  * The GNU General Public License can be found at
@@ -19,15 +19,14 @@
 namespace Fr\ProjectBuilder\Tests\Unit\Task;
 
 use Composer\IO\IOInterface;
-use Fr\ProjectBuilder\Task\TaskInterface;
-use Fr\ProjectBuilder\Task\Unlink;
+use Fr\ProjectBuilder\Task\AbstractTask;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-class UnlinkTest extends TestCase
+class AbstractTaskTest extends TestCase
 {
     /**
-     * @var Unlink
+     * @var AbstractTask|MockObject
      */
     protected $subject;
 
@@ -40,35 +39,17 @@ class UnlinkTest extends TestCase
     {
         parent::setUp();
         $this->io = $this->getMockBuilder(IOInterface::class)
-            ->setMethods(['write', 'writeError'])
             ->getMockForAbstractClass();
-
-        $this->subject = new Unlink($this->io);
+        $this->subject = $this->getMockBuilder(AbstractTask::class)
+            ->setConstructorArgs([$this->io])
+            ->getMockForAbstractClass();
     }
 
-    public function testPerformWritesMessageForEmptyConfiguration()
+    public function testConstructorSetsIo()
     {
-        $this->io->expects($this->once())
-            ->method('write')
-            ->with(get_class($this->subject) . ': ' . TaskInterface::MESSAGE_EMPTY_CONFIGURATION);
-
-        $this->subject->perform();
-    }
-
-    public function testWritesMessageForMissingFile()
-    {
-        $invalidFilePath = 'foo-bar';
-        $config = [$invalidFilePath];
-        $this->subject = new Unlink($this->io, $config);
-
-        $expectedMessage = sprintf(
-            TaskInterface::MESSAGE_FILE_NOT_FOUND,
-            $invalidFilePath
+        $this->assertSame(
+            $this->io,
+            $this->subject->getIo()
         );
-        $this->io->expects($this->once())
-            ->method('writeError')
-            ->with($expectedMessage);
-
-        $this->subject->perform();
     }
 }

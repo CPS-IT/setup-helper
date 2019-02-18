@@ -22,5 +22,5 @@ interface SettingsInterface
 {
     const INSTALLER_EXTRA_KEY = 'project-builder';
     const UNLINK_TASK_KEY = 'unlink';
-    const RENAME_TASK_KEY = 'rename';
+    const MOVE_TASK_KEY = 'move';
 }

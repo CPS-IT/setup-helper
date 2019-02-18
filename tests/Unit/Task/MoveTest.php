@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2019 Dirk Wenzel <wenzel@cps-it.de>
+ *  (c) 2019 Dirk Wenzel
  *  All rights reserved
  *
  * The GNU General Public License can be found at
@@ -19,15 +19,18 @@
 namespace Fr\ProjectBuilder\Tests\Unit\Task;
 
 use Composer\IO\IOInterface;
+use Fr\ProjectBuilder\Task\Move;
 use Fr\ProjectBuilder\Task\TaskInterface;
-use Fr\ProjectBuilder\Task\Unlink;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-class UnlinkTest extends TestCase
+/**
+ * Class MoveTest
+ */
+class MoveTest extends TestCase
 {
     /**
-     * @var Unlink
+     * @var Move
      */
     protected $subject;
 
@@ -36,6 +39,7 @@ class UnlinkTest extends TestCase
      */
     protected $io;
 
+
     public function setUp()/* The :void return type declaration that should be here would cause a BC issue */
     {
         parent::setUp();
@@ -43,32 +47,48 @@ class UnlinkTest extends TestCase
             ->setMethods(['write', 'writeError'])
             ->getMockForAbstractClass();
 
-        $this->subject = new Unlink($this->io);
+        $this->subject = new Move($this->io);
     }
 
     public function testPerformWritesMessageForEmptyConfiguration()
     {
+        $expectedMessage = get_class($this->subject) . ': ' .
+            TaskInterface::MESSAGE_EMPTY_CONFIGURATION;
         $this->io->expects($this->once())
             ->method('write')
-            ->with(get_class($this->subject) . ': ' . TaskInterface::MESSAGE_EMPTY_CONFIGURATION);
+            ->with($expectedMessage);
 
         $this->subject->perform();
     }
 
-    public function testWritesMessageForMissingFile()
+
+    public function testPerformWritesMessageForSuccess()
     {
-        $invalidFilePath = 'foo-bar';
-        $config = [$invalidFilePath];
-        $this->subject = new Unlink($this->io, $config);
+        $source = 'foo.txt';
+        $target = 'bar';
+        mkdir($target);
+        $fileHandle = fopen($source, 'ab');
+        fwrite($fileHandle, 'foo');
+        fclose($fileHandle);
+
+        $config = [
+            $source => $target
+        ];
+        $this->subject = new Move($this->io, $config);
 
         $expectedMessage = sprintf(
-            TaskInterface::MESSAGE_FILE_NOT_FOUND,
-            $invalidFilePath
+            TaskInterface::MESSAGE_FILE_MOVED,
+            $source, $target
         );
         $this->io->expects($this->once())
-            ->method('writeError')
+            ->method('write')
             ->with($expectedMessage);
+        $this->io->expects($this->never())
+            ->method('writeError');
 
         $this->subject->perform();
+
+        unlink($target . '/' . $source);
+        rmdir($target);
     }
 }
