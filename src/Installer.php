@@ -25,8 +25,6 @@ use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
-use Fr\ProjectBuilder\Report\Error;
-use Fr\ProjectBuilder\Report\ResultInterface;
 use Fr\ProjectBuilder\SettingsInterface as SI;
 use Fr\ProjectBuilder\Task\Move;
 use Fr\ProjectBuilder\Task\TaskInterface;

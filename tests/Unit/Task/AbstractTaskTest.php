@@ -35,13 +35,18 @@ class AbstractTaskTest extends TestCase
      */
     protected $io;
 
+    /**
+     * @var array
+     */
+    protected $config = ['foo'];
+
     public function setUp()/* The :void return type declaration that should be here would cause a BC issue */
     {
         parent::setUp();
         $this->io = $this->getMockBuilder(IOInterface::class)
             ->getMockForAbstractClass();
         $this->subject = $this->getMockBuilder(AbstractTask::class)
-            ->setConstructorArgs([$this->io])
+            ->setConstructorArgs([$this->io, $this->config])
             ->getMockForAbstractClass();
     }
 
@@ -50,6 +55,29 @@ class AbstractTaskTest extends TestCase
         $this->assertSame(
             $this->io,
             $this->subject->getIo()
+        );
+    }
+
+    public function testConstructorSetsConfig()
+    {
+        $this->assertSame(
+            $this->config,
+            $this->subject->getConfig()
+        );
+    }
+
+    public function testDefaultConfigIsEmptyArray()
+    {
+        // constructor argument config empty
+        $constructorArguments = [$this->io];
+        $expectedConfig = [];
+
+        $this->subject = $this->getMockBuilder(AbstractTask::class)
+            ->setConstructorArgs($constructorArguments)
+            ->getMockForAbstractClass();
+        $this->assertSame(
+            $expectedConfig,
+            $this->subject->getConfig()
         );
     }
 }

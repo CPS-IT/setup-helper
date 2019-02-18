@@ -52,7 +52,7 @@ Add a key `project-builder` to to the `extra` section of your `composer.json`.
     "project-builder": [
       {
         "move": {
-          "path/to/old/file/or/folder": "path/to/new/file/or/folder",
+          "path/to/old/file/or/folder": "path/to/new/folder",
           "other/file": "new/path"
         }
       }
@@ -60,6 +60,24 @@ Add a key `project-builder` to to the `extra` section of your `composer.json`.
   }
 }
 ```
+**Note**: _Move_ does not rename a file or folder. If required combine it with a _Rename_ task. 
+
+### Rename files or folders
+```json
+{
+  "extra": {
+    "project-builder": [
+      {
+        "rename": {
+          "path/to/old/file/or/folder": "newName",
+          "other/file": "otherName"
+        }
+      }
+    ]
+  }
+}
+```
+The source path is relative to the current working directory. This should always be the composer root directory, if the Installer is called via composer plugin API as expected.
 
 ### Upcoming
 * replace placeholder in templates
