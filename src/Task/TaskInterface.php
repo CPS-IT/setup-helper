@@ -29,6 +29,7 @@ interface TaskInterface
     const MESSAGE_FILE_NOT_FOUND = 'File or folder %s not found';
     const MESSAGE_FILE_DELETED = 'File %s deleted';
     const MESSAGE_FILE_MOVED = 'File moved from %s to %s';
+    const MESSAGE_FILE_RENAMED = 'File or folder renamed from %s to %s';
 
     /**
      * Constructor for Tasks

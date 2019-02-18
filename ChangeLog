@@ -1,3 +1,7 @@
+2019-02-18         [RELEASE] Release of project-builder 0.3.0 (Dirk Wenzel)
+2019-02-18 317b364 [BUGFIX] fixed error in unit test caused by invalid path (Dirk Wenzel)
+2019-02-18 2bc98ab [TASK] Task Rename implemented (Dirk Wenzel)
+
 2019-02-18         [RELEASE] Release of project-builder 0.2.0 (Dirk Wenzel)
 2019-02-17 dbe3817 [TASK] require naucon/file (Dirk Wenzel)
 2019-02-17 1fbfb03 [BUGFIX] constant name in SettingsInferface corrected (Dirk Wenzel)

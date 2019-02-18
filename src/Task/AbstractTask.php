@@ -52,6 +52,8 @@ class AbstractTask
     }
 
     /**
+     * Get the config
+     *
      * @return array
      */
     public function getConfig()
@@ -59,4 +61,13 @@ class AbstractTask
         return $this->config;
     }
 
+    /**
+     * Set the config
+     *
+     * @param array $config
+     */
+    public function setConfig(array $config)
+    {
+
+    }
 }
