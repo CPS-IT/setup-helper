@@ -27,7 +27,7 @@ use PHPUnit\Framework\TestCase;
 
 class RenameTest extends TestCase
 {
-    const  FIXTURE_PATH = 'Unit/Fixtures/';
+    const  FIXTURE_PATH = 'tests/Unit/Fixtures/';
 
     /**
      * @var Rename
