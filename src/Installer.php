@@ -27,6 +27,7 @@ use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
 use Fr\ProjectBuilder\SettingsInterface as SI;
 use Fr\ProjectBuilder\Task\Move;
+use Fr\ProjectBuilder\Task\Rename;
 use Fr\ProjectBuilder\Task\TaskInterface;
 use Fr\ProjectBuilder\Task\Unlink;
 
@@ -38,7 +39,8 @@ final class Installer implements PluginInterface, EventSubscriberInterface
     const ENTRY_METHOD_NAME = 'performTasks';
     const TASKS_TO_PERFORM = [
         SI::UNLINK_TASK_KEY => Unlink::class,
-        SI::MOVE_TASK_KEY => Move::class
+        SI::MOVE_TASK_KEY => Move::class,
+        SI::RENAME_TASK_KEY => Rename::class
     ];
     const MESSAGE_NO_CONFIGURATION = '<info>No configuration found for project-builder in extra section of composer.json</info>';
 
