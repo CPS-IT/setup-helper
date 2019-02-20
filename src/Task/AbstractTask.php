@@ -69,7 +69,7 @@ class AbstractTask
      */
     public function setConfig(array $config)
     {
-
+        $this->config = $config;
     }
 
     /**

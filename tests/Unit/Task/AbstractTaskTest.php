@@ -91,4 +91,14 @@ class AbstractTaskTest extends TestCase
         );
     }
 
+    public function testConfigCanBeSet()
+    {
+        $config = ['boo'];
+
+        $this->subject->setConfig($config);
+        $this->assertSame(
+            $config,
+            $this->subject->getConfig()
+        );
+    }
 }
