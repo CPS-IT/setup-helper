@@ -21,12 +21,12 @@ namespace Fr\ProjectBuilder\Tests\Unit\Task;
 use Composer\IO\IOInterface;
 use Fr\ProjectBuilder\Task\MakeDirectory;
 use Fr\ProjectBuilder\Task\TaskInterface;
+use Naucon\File\File;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class MakeDirectoryTest extends TestCase
 {
-    const  FIXTURE_PATH = 'tests/Unit/Fixtures/';
     /**
      * @var MakeDirectory
      */
@@ -59,46 +59,88 @@ class MakeDirectoryTest extends TestCase
 
     public function testPerformWritesMessageForSuccess()
     {
-        $firstLevelDirectory = 'boom/';
+        $parentDirectory = 'boom/';
         $newDirectory = 'boom/bam';
+        $expectedMessage = sprintf(
+            TaskInterface::MESSAGE_FOLDER_CREATED,
+            $newDirectory
+        );
 
-        $this->cleanupFixtures($newDirectory, $firstLevelDirectory);
+        $this->prepareFixtures($newDirectory, $parentDirectory);
 
-        $config = [$firstLevelDirectory];
+        $config = [$newDirectory];
         $this->subject->setConfig($config);
 
         $this->io->expects($this->once())
             ->method('write')
-            ->with(get_class($this->subject) . ': ' . TaskInterface::MESSAGE_EMPTY_CONFIGURATION);
+            ->with($expectedMessage);
 
         $this->subject->perform();
     }
 
     public function testPerformMakesDirectory()
     {
-        $firstLevelDirectory = 'boom/';
+        $parentDirectory = 'boom/';
         $newDirectory = 'boom/bam';
 
-        $this->cleanupFixtures($newDirectory, $firstLevelDirectory);
+        $this->prepareFixtures($newDirectory, $parentDirectory);
 
-        $config = [$firstLevelDirectory];
+        $config = [$newDirectory];
         $this->subject->setConfig($config);
         $this->subject->perform();
 
         $this->assertDirectoryExists(
-            self::FIXTURE_PATH . $newDirectory
+            getcwd() . File::PATH_SEPARATOR . $newDirectory
         );
+
+        $this->prepareFixtures($newDirectory, $parentDirectory);
+    }
+
+    public function testPerformWritesMessageForExistingDirectory()
+    {
+        $newDirectory = 'boom/bam';
+        $expectedMessage = sprintf(
+            TaskInterface::MESSAGE_FOLDER_ALREADY_EXISTS,
+            $newDirectory
+        );
+
+        $this->createDirectoryRecursive($newDirectory);
+
+        $config = [$newDirectory];
+        $this->subject->setConfig($config);
+
+        $this->io->expects($this->once())
+            ->method('write')
+            ->with($expectedMessage);
+
+        $this->subject->perform();
     }
 
     /**
+     * Make sure the directories which should be created do not exist
      * @param $newDirectory
-     * @param $firstLevelDirectory
+     * @param $parentDirectory
      */
-    protected function cleanupFixtures($newDirectory, $firstLevelDirectory): void
+    protected function prepareFixtures($newDirectory, $parentDirectory)
     {
-        if (is_dir(self::FIXTURE_PATH . $newDirectory)) {
-            rmdir(self::FIXTURE_PATH . $newDirectory);
-            rmdir(self::FIXTURE_PATH . $firstLevelDirectory);
+        $newDirectoryPath = getcwd() . File::PATH_SEPARATOR .  $newDirectory;
+        $parentDirectoryPath = getcwd() . File::PATH_SEPARATOR . $parentDirectory;
+        if (is_dir($newDirectoryPath)) {
+            rmdir($newDirectoryPath);
+            rmdir($parentDirectoryPath);
+        }
+    }
+
+    /**
+     * Make sure the directory does exist
+     * @param $newDirectory
+     */
+    protected function createDirectoryRecursive($newDirectory)
+    {
+        $newDirectoryPath = getcwd() . File::PATH_SEPARATOR .  $newDirectory;
+        if (!is_dir($newDirectoryPath)) {
+            mkdir(
+                $newDirectoryPath, 0700 , true);
         }
     }
 }

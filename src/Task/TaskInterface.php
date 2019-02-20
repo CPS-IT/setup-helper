@@ -31,6 +31,7 @@ interface TaskInterface
     const MESSAGE_FILE_MOVED = 'File moved from %s to %s';
     const MESSAGE_FILE_RENAMED = 'File or folder renamed from %s to %s';
     const MESSAGE_FOLDER_CREATED = 'Folder %s created';
+    const MESSAGE_FOLDER_ALREADY_EXISTS = 'Folder %s already exists';
 
     /**
      * Constructor for Tasks

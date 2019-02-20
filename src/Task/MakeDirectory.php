@@ -38,6 +38,15 @@ class MakeDirectory extends AbstractTask implements TaskInterface
                 $file = new File(
                     $this->getWorkingDirectory() . $folder
                 );
+                if ($file->exists()) {
+                    $this->io->write(
+                        sprintf(
+                            TaskInterface::MESSAGE_FOLDER_ALREADY_EXISTS,
+                            $folder
+                        )
+                    );
+                    continue;
+                }
                 if ($file->mkdirs()){
                     $this->io->write(
                         sprintf(
