@@ -55,8 +55,7 @@ class Rename extends AbstractTask implements TaskInterface
      */
     protected function renameFile(string $oldName, string $newName)
     {
-        $workingDirectory = getcwd() . File::PATH_SEPARATOR;
-        $file = new  File($workingDirectory . $oldName);
+        $file = new  File($this->getWorkingDirectory() . $oldName);
         if (!$file->exists()) {
             $this->io->writeError(
                 sprintf(
@@ -78,4 +77,6 @@ class Rename extends AbstractTask implements TaskInterface
         );
 
     }
+
+
 }

@@ -1,3 +1,11 @@
+2019-02-20         [RELEASE] Release of project-builder 0.4.0 (Dirk Wenzel)
+2019-02-20 792b823 [BUGFIX] fixture file restored again (Dirk Wenzel)
+2019-02-20 10c0d86 [TASK] Task/MakeDirectory finished - missing fixture resorted (Dirk Wenzel)
+2019-02-20 de75add [BUGFIX] fixed error caused by missing implementation of setter in AbstractTask (Dirk Wenzel)
+2019-02-20 4c55f69 [BUGFIX] missing fixture file restored (Dirk Wenzel)
+2019-02-20 c63b923 [TASK] Task/MakeDirectory implemented (WIP) (Dirk Wenzel)
+2019-02-20 90328d5 [BUGFIX] Unlink now uses absolute path (Dirk Wenzel)
+
 2019-02-18         [RELEASE] Release of project-builder 0.3.1 (Dirk Wenzel)
 2019-02-18 05fa750 [HOTFIX] missing constants for task rename added (Dirk Wenzel)
 

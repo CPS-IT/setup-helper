@@ -20,6 +20,7 @@ namespace Fr\ProjectBuilder\Tests\Unit\Task;
 
 use Composer\IO\IOInterface;
 use Fr\ProjectBuilder\Task\AbstractTask;
+use Naucon\File\File;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -77,6 +78,26 @@ class AbstractTaskTest extends TestCase
             ->getMockForAbstractClass();
         $this->assertSame(
             $expectedConfig,
+            $this->subject->getConfig()
+        );
+    }
+
+    public function testGetWorkingDirectoryReturnsWorkingDirectory()
+    {
+        $expectedDirectory = getcwd() . File::PATH_SEPARATOR;
+        $this->assertSame(
+            $expectedDirectory,
+            $this->subject->getWorkingDirectory()
+        );
+    }
+
+    public function testConfigCanBeSet()
+    {
+        $config = ['boo'];
+
+        $this->subject->setConfig($config);
+        $this->assertSame(
+            $config,
             $this->subject->getConfig()
         );
     }

@@ -1,5 +1,4 @@
 <?php
-
 namespace Fr\ProjectBuilder\Task;
 
 /***************************************************************
@@ -18,20 +17,13 @@ namespace Fr\ProjectBuilder\Task;
  * GNU General Public License for more details.
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 use Naucon\File\File;
-use Naucon\File\FileInterface;
 
 /**
- * Class Unlink
- *
- * unlink given files and folders
+ * Class MakeDirectory
  */
-class Unlink extends AbstractTask implements TaskInterface
+class MakeDirectory extends AbstractTask implements TaskInterface
 {
-    /**
-     * @return void
-     */
     public function perform()
     {
         $config = $this->getConfig();
@@ -41,35 +33,32 @@ class Unlink extends AbstractTask implements TaskInterface
             );
         }
 
-        foreach ($config as $filePath) {
+        foreach ($config as $folder) {
             try {
-                $this->removeFile($filePath);
+                $file = new File(
+                    $this->getWorkingDirectory() . $folder
+                );
+                if ($file->exists()) {
+                    $this->io->write(
+                        sprintf(
+                            TaskInterface::MESSAGE_FOLDER_ALREADY_EXISTS,
+                            $folder
+                        )
+                    );
+                    continue;
+                }
+                if ($file->mkdirs()){
+                    $this->io->write(
+                        sprintf(
+                            TaskInterface::MESSAGE_FOLDER_CREATED,
+                            $folder
+                        )
+                    );
+                }
             } catch (\Exception $exception) {
                 $this->io->writeError($exception->getMessage());
             }
         }
     }
 
-    /**
-     * @param $filePath
-     * @return string
-     * @throws \Exception
-     */
-    protected function removeFile($filePath)
-    {
-        $file = new File(getcwd() . $filePath);
-        if (!$file->exists()) {
-            $this->io->writeError(
-                sprintf(
-                    TaskInterface::MESSAGE_FILE_NOT_FOUND,
-                    $filePath
-                )
-            );
-
-            return;
-        }
-
-        $file->delete();
-        $this->io->write(sprintf(TaskInterface::MESSAGE_FILE_DELETED, $filePath));
-    }
 }

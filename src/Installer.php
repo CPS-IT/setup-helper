@@ -26,6 +26,7 @@ use Composer\Plugin\PluginInterface;
 use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
 use Fr\ProjectBuilder\SettingsInterface as SI;
+use Fr\ProjectBuilder\Task\MakeDirectory;
 use Fr\ProjectBuilder\Task\Move;
 use Fr\ProjectBuilder\Task\Rename;
 use Fr\ProjectBuilder\Task\TaskInterface;
@@ -40,7 +41,8 @@ final class Installer implements PluginInterface, EventSubscriberInterface
     const TASKS_TO_PERFORM = [
         SI::UNLINK_TASK_KEY => Unlink::class,
         SI::MOVE_TASK_KEY => Move::class,
-        SI::RENAME_TASK_KEY => Rename::class
+        SI::RENAME_TASK_KEY => Rename::class,
+        SI::MAKE_DIRECTORY_TASK_KEY => MakeDirectory::class
     ];
     const MESSAGE_NO_CONFIGURATION = '<info>No configuration found for project-builder in extra section of composer.json</info>';
 
