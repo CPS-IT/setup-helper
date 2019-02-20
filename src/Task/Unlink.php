@@ -20,6 +20,7 @@ namespace Fr\ProjectBuilder\Task;
  ***************************************************************/
 
 use Naucon\File\File;
+use Naucon\File\FileInterface;
 
 /**
  * Class Unlink
@@ -56,7 +57,7 @@ class Unlink extends AbstractTask implements TaskInterface
      */
     protected function removeFile($filePath)
     {
-        $file = new File($filePath);
+        $file = new File(getcwd() . $filePath);
         if (!$file->exists()) {
             $this->io->writeError(
                 sprintf(

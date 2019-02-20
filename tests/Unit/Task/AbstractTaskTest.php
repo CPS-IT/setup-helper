@@ -20,6 +20,7 @@ namespace Fr\ProjectBuilder\Tests\Unit\Task;
 
 use Composer\IO\IOInterface;
 use Fr\ProjectBuilder\Task\AbstractTask;
+use Naucon\File\File;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -80,4 +81,14 @@ class AbstractTaskTest extends TestCase
             $this->subject->getConfig()
         );
     }
+
+    public function testGetWorkingDirectoryReturnsWorkingDirectory()
+    {
+        $expectedDirectory = getcwd() . File::PATH_SEPARATOR;
+        $this->assertSame(
+            $expectedDirectory,
+            $this->subject->getWorkingDirectory()
+        );
+    }
+
 }

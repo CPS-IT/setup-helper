@@ -2,6 +2,7 @@
 
 namespace Fr\ProjectBuilder\Task;
 use Composer\IO\IOInterface;
+use Naucon\File\File;
 
 
 /***************************************************************
@@ -69,5 +70,15 @@ class AbstractTask
     public function setConfig(array $config)
     {
 
+    }
+
+    /**
+     * Get the working dirctory of the current script
+     * (This should always be the composer root path)
+     * @return string
+     */
+    public function getWorkingDirectory(): string
+    {
+        return getcwd() . File::PATH_SEPARATOR;
     }
 }
