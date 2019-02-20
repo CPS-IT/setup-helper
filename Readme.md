@@ -79,5 +79,22 @@ Add a key `project-builder` to to the `extra` section of your `composer.json`.
 ```
 The source path is relative to the current working directory. This should always be the composer root directory, if the Installer is called via composer plugin API as expected.
 
+### Make directory
+```json
+{
+  "extra": {
+    "project-builder": [
+      {
+        "makeDirectory": [
+          "path/to/new/folder"
+        ]
+      }
+    ]
+  }
+}
+```
+The directory path is relative to the current working directory. This should always be the composer root directory, if the Installer is called via composer plugin API as expected.
+Any missing directory will be created recursively.
+
 ### Upcoming
 * replace placeholder in templates
