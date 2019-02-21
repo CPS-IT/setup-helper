@@ -47,7 +47,7 @@ class AbstractTask
     /**
      * @return IOInterface
      */
-    public function getIo()
+    public function getIo():IOInterface
     {
         return $this->io;
     }
@@ -57,7 +57,7 @@ class AbstractTask
      *
      * @return array
      */
-    public function getConfig()
+    public function getConfig(): array
     {
         return $this->config;
     }

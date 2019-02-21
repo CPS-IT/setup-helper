@@ -51,7 +51,7 @@ class MakeDirectoryTest extends TestCase
     {
         $this->io->expects($this->once())
             ->method('write')
-            ->with(get_class($this->subject) . ': ' . TaskInterface::MESSAGE_EMPTY_CONFIGURATION);
+            ->with(\get_class($this->subject) . ': ' . TaskInterface::MESSAGE_EMPTY_CONFIGURATION);
 
         $this->subject->perform();
     }

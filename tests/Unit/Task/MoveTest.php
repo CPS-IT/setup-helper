@@ -52,7 +52,7 @@ class MoveTest extends TestCase
 
     public function testPerformWritesMessageForEmptyConfiguration()
     {
-        $expectedMessage = get_class($this->subject) . ': ' .
+        $expectedMessage = \get_class($this->subject) . ': ' .
             TaskInterface::MESSAGE_EMPTY_CONFIGURATION;
         $this->io->expects($this->once())
             ->method('write')
