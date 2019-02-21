@@ -16,15 +16,15 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-namespace Fr\ProjectBuilder\Tests\Unit;
+namespace CPSIT\ProjectBuilder\Tests\Unit;
 
 use Composer\Composer;
 use Composer\IO\IOInterface;
 use Composer\Package\RootPackageInterface;
 use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
-use Fr\ProjectBuilder\Installer;
-use Fr\ProjectBuilder\SettingsInterface as SI;
+use CPSIT\ProjectBuilder\Installer;
+use CPSIT\ProjectBuilder\SettingsInterface as SI;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 

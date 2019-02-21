@@ -1,6 +1,6 @@
 <?php
 
-namespace Fr\ProjectBuilder\Task;
+namespace CPSIT\ProjectBuilder\Task;
 use Composer\IO\IOInterface;
 use Naucon\File\File;
 

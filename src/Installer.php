@@ -1,6 +1,6 @@
 <?php
 
-namespace Fr\ProjectBuilder;
+namespace CPSIT\ProjectBuilder;
 
 /***************************************************************
  *  Copyright notice
@@ -25,12 +25,12 @@ use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
-use Fr\ProjectBuilder\SettingsInterface as SI;
-use Fr\ProjectBuilder\Task\MakeDirectory;
-use Fr\ProjectBuilder\Task\Move;
-use Fr\ProjectBuilder\Task\Rename;
-use Fr\ProjectBuilder\Task\TaskInterface;
-use Fr\ProjectBuilder\Task\Unlink;
+use CPSIT\ProjectBuilder\SettingsInterface as SI;
+use CPSIT\ProjectBuilder\Task\MakeDirectory;
+use CPSIT\ProjectBuilder\Task\Move;
+use CPSIT\ProjectBuilder\Task\Rename;
+use CPSIT\ProjectBuilder\Task\TaskInterface;
+use CPSIT\ProjectBuilder\Task\Unlink;
 
 /**
  * Class Installer
@@ -44,7 +44,7 @@ final class Installer implements PluginInterface, EventSubscriberInterface
         SI::RENAME_TASK_KEY => Rename::class,
         SI::MAKE_DIRECTORY_TASK_KEY => MakeDirectory::class
     ];
-    const MESSAGE_NO_CONFIGURATION = '<info>No configuration found for project-builder in extra section of composer.json</info>';
+    const MESSAGE_NO_CONFIGURATION = '<info>No configuration found for setup-helper in extra section of composer.json</info>';
 
     const MESSAGE_INVALID_TASK_KEY = 'Invalid key %s for task in extra.' . SI::INSTALLER_EXTRA_KEY;
 

@@ -1,5 +1,5 @@
 {
-  "name": "fr/project-builder",
+  "name": "cpsit/setup-helper",
   "description": "Builds project based on defaults of familie redlich digital",
   "license": "GPL-2.0-or-later",
   "type": "composer-plugin",
@@ -31,15 +31,15 @@
   },
   "autoload": {
     "psr-4": {
-      "Fr\\ProjectBuilder\\": "src"
+      "CPSIT\\ProjectBuilder\\": "src"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Fr\\ProjectBuilder\\Tests\\": "tests/"
+      "CPSIT\\ProjectBuilder\\Tests\\": "tests/"
     }
   },
   "extra": {
-    "class": "Fr\\ProjectBuilder\\Installer"
+    "class": "CPSIT\\ProjectBuilder\\Installer"
   }
 }

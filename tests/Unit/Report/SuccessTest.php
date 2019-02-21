@@ -16,10 +16,10 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-namespace Fr\ProjectBuilder\Tests\Unit\Report;
+namespace CPSIT\ProjectBuilder\Tests\Unit\Report;
 
-use Fr\ProjectBuilder\Report\ResultInterface;
-use Fr\ProjectBuilder\Report\Success;
+use CPSIT\ProjectBuilder\Report\ResultInterface;
+use CPSIT\ProjectBuilder\Report\Success;
 use PHPUnit\Framework\TestCase;
 
 class SuccessTest extends TestCase

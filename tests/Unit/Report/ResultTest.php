@@ -1,8 +1,8 @@
 <?php
 
-namespace Fr\ProjectBuilder\Tests\Unit\Report;
-use Fr\ProjectBuilder\Report\Result;
-use Fr\ProjectBuilder\Report\ResultInterface;
+namespace CPSIT\ProjectBuilder\Tests\Unit\Report;
+use CPSIT\ProjectBuilder\Report\Result;
+use CPSIT\ProjectBuilder\Report\ResultInterface;
 use PHPUnit\Framework\TestCase;
 
 /***************************************************************
