@@ -16,11 +16,11 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-namespace Fr\ProjectBuilder\Tests\Unit\Task;
+namespace CPSIT\ProjectBuilder\Tests\Unit\Task;
 
 use Composer\IO\IOInterface;
-use Fr\ProjectBuilder\Task\Move;
-use Fr\ProjectBuilder\Task\TaskInterface;
+use CPSIT\ProjectBuilder\Task\Move;
+use CPSIT\ProjectBuilder\Task\TaskInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -52,7 +52,7 @@ class MoveTest extends TestCase
 
     public function testPerformWritesMessageForEmptyConfiguration()
     {
-        $expectedMessage = get_class($this->subject) . ': ' .
+        $expectedMessage = \get_class($this->subject) . ': ' .
             TaskInterface::MESSAGE_EMPTY_CONFIGURATION;
         $this->io->expects($this->once())
             ->method('write')

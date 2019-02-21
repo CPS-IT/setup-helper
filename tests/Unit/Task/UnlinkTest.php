@@ -16,11 +16,11 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-namespace Fr\ProjectBuilder\Tests\Unit\Task;
+namespace CPSIT\ProjectBuilder\Tests\Unit\Task;
 
 use Composer\IO\IOInterface;
-use Fr\ProjectBuilder\Task\TaskInterface;
-use Fr\ProjectBuilder\Task\Unlink;
+use CPSIT\ProjectBuilder\Task\TaskInterface;
+use CPSIT\ProjectBuilder\Task\Unlink;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -50,7 +50,7 @@ class UnlinkTest extends TestCase
     {
         $this->io->expects($this->once())
             ->method('write')
-            ->with(get_class($this->subject) . ': ' . TaskInterface::MESSAGE_EMPTY_CONFIGURATION);
+            ->with(\get_class($this->subject) . ': ' . TaskInterface::MESSAGE_EMPTY_CONFIGURATION);
 
         $this->subject->perform();
     }

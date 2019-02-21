@@ -16,16 +16,15 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-namespace Fr\ProjectBuilder\Tests\Unit;
+namespace CPSIT\ProjectBuilder\Tests\Unit;
 
 use Composer\Composer;
 use Composer\IO\IOInterface;
 use Composer\Package\RootPackageInterface;
 use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
-use Fr\ProjectBuilder\Installer;
-use Fr\ProjectBuilder\SettingsInterface as SI;
-use Fr\ProjectBuilder\Task\TaskInterface;
+use CPSIT\ProjectBuilder\Installer;
+use CPSIT\ProjectBuilder\SettingsInterface as SI;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -77,30 +76,31 @@ class InstallerTest extends TestCase
         );
     }
 
-    public function performTasksDataProvider()
+    /**
+     * @return array
+     */
+    public function performTasksDataProvider(): array
     {
         $nonExistingFilePath = '7cd1e9d0f2ac1b9c7c65f3fb7c85962c6ed774196c4470af4f92a17ab0983338';
 
         return [
             // extra,
             'empty extra' => [
-                [], Installer::MESSAGE_NO_CONFIGURATION
+                []
             ],
             'unlink: file not found' => [
                 [
                     SI::INSTALLER_EXTRA_KEY => [
                         [SI::UNLINK_TASK_KEY => [$nonExistingFilePath]]
                     ]
-                ],
-                sprintf(TaskInterface::MESSAGE_FILE_NOT_FOUND, $nonExistingFilePath)
+                ]
             ],
             'unlink: file deleted' => [
                 [
                     SI::INSTALLER_EXTRA_KEY => [
                         [SI::UNLINK_TASK_KEY => [$this->fileName]]
                     ]
-                ],
-                sprintf(TaskInterface::MESSAGE_FILE_DELETED, $this->fileName)
+                ]
             ]
         ];
 
@@ -155,10 +155,9 @@ class InstallerTest extends TestCase
 
     /**
      * @param array $extra
-     * @param string $expectedMessage
      * @dataProvider performTasksDataProvider
      */
-    public function testPerformTasks(array $extra, string $expectedMessage)
+    public function testPerformTasks(array $extra)
     {
         $package = $this->getMockBuilder(RootPackageInterface::class)
             ->setMethods(['getExtra'])

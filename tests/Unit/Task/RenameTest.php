@@ -16,11 +16,11 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-namespace Fr\ProjectBuilder\Tests\Unit\Task;
+namespace CPSIT\ProjectBuilder\Tests\Unit\Task;
 
 use Composer\IO\IOInterface;
-use Fr\ProjectBuilder\Task\Rename;
-use Fr\ProjectBuilder\Task\TaskInterface;
+use CPSIT\ProjectBuilder\Task\Rename;
+use CPSIT\ProjectBuilder\Task\TaskInterface;
 use Naucon\File\File;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -50,7 +50,7 @@ class RenameTest extends TestCase
 
     public function testPerformWritesMessageForEmptyConfiguration()
     {
-        $expectedMessage = get_class($this->subject) . ': ' .
+        $expectedMessage = \get_class($this->subject) . ': ' .
             TaskInterface::MESSAGE_EMPTY_CONFIGURATION;
         $this->io->expects($this->once())
             ->method('write')
@@ -85,7 +85,7 @@ class RenameTest extends TestCase
         $source = self::FIXTURE_PATH . 'foo.txt';
         $newName = 'bar.boom';
 
-        $this->prepareFileFixtures($source, $newName);
+        $this->prepareFileFixtures($source);
 
         $config = [
             $source => $newName
@@ -104,26 +104,30 @@ class RenameTest extends TestCase
 
         $this->subject->perform();
 
-        $this->cleanUpFileFixtures($source, $newName);
+        $this->cleanUpFileFixtures($newName);
     }
 
     /**
-     * @param $source
-     * @param $newName
-     * @throws \Naucon\File\Exception\FileException
+     * @param $fileName
      * @return void
+     * @throws \Naucon\File\Exception\FileException
      */
-    public function prepareFileFixtures($source, $newName)
+    public function prepareFileFixtures($fileName)
     {
         $workingDirectory = getcwd() . File::PATH_SEPARATOR;
-        if (!file_exists($workingDirectory . $source)) {
+        if (!file_exists($workingDirectory . $fileName)) {
 
-            $sourceFile = new File($workingDirectory . $source);
+            $sourceFile = new File($workingDirectory . $fileName);
             $sourceFile->createNewFile();
         }
     }
 
-    protected function cleanUpFileFixtures($source, $newName)
+    /**
+     * Removes a file from fixture folder if exists
+     *
+     * @param $newName
+     */
+    protected function cleanUpFileFixtures($newName)
     {
         $workingDirectory = getcwd() . File::PATH_SEPARATOR;
         $fixturePath = $workingDirectory . self::FIXTURE_PATH;

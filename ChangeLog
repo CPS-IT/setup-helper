@@ -1,3 +1,7 @@
+2019-02-21         [RELEASE] Release of setup-helper 0.5.0 (Dirk Wenzel)
+2019-02-21 d0def33 [TASK] project renamed to setup-helper - vendor name and composer name adapted (Dirk Wenzel)
+2019-02-21 7c0dc0e [TASK] coding style (Dirk Wenzel)
+
 2019-02-20         [RELEASE] Release of project-builder 0.4.0 (Dirk Wenzel)
 2019-02-20 792b823 [BUGFIX] fixture file restored again (Dirk Wenzel)
 2019-02-20 10c0d86 [TASK] Task/MakeDirectory finished - missing fixture resorted (Dirk Wenzel)

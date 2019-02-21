@@ -1,6 +1,6 @@
 <?php
 
-namespace Fr\ProjectBuilder;
+namespace CPSIT\ProjectBuilder;
 
 /***************************************************************
  *  Copyright notice
@@ -20,7 +20,7 @@ namespace Fr\ProjectBuilder;
  ***************************************************************/
 interface SettingsInterface
 {
-    const INSTALLER_EXTRA_KEY = 'project-builder';
+    const INSTALLER_EXTRA_KEY = 'setup-helper';
     const UNLINK_TASK_KEY = 'unlink';
     const MOVE_TASK_KEY = 'move';
     const RENAME_TASK_KEY = 'rename';

@@ -1,6 +1,6 @@
 <?php
 
-namespace Fr\ProjectBuilder\Report;
+namespace CPSIT\ProjectBuilder\Report;
 
 /***************************************************************
  *  Copyright notice

@@ -16,10 +16,10 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-namespace Fr\ProjectBuilder\Tests\Unit\Task;
+namespace CPSIT\ProjectBuilder\Tests\Unit\Task;
 
 use Composer\IO\IOInterface;
-use Fr\ProjectBuilder\Task\AbstractTask;
+use CPSIT\ProjectBuilder\Task\AbstractTask;
 use Naucon\File\File;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
