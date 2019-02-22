@@ -6,17 +6,6 @@ Builds projects based on configuration and templates.
 This is a composer plugin. It performs predefined tasks on composer after `update` or `install` command.
 
 ### Usage
-The package is not yet available through packagist.org. Add an entry to the `repositories` section of the `composer.json`:
-```json
-{
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "git@gitlab.cps-projects.de:DevOps/setup-helper.git"
-    }
-  ]
-}
-```
 ```bash
 composer require cpsit/setup-helper
 ```
