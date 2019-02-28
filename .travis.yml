@@ -33,14 +33,14 @@ script:
   if [[ "$COVERAGE" != "1" ]]; then
     echo;
     echo "Running unit tests";
-    .build/bin/phpunit --colors -c tests/Unit/
+    .build/bin/phpunit --colors tests/Unit/
   fi
 
 - >
   if [[ "$COVERAGE" == "1" ]]; then
     echo;
     echo "Running unit tests";
-    .build/bin/phpunit --colors --coverage-clover tests/Unit \
+    .build/bin/phpunit --colors tests/Unit \
     --coverage-clover .build/log/coverage/clover.xml \
     --coverage-junit .build/log/junit.xml
   fi
