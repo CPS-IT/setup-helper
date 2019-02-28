@@ -92,8 +92,6 @@ class SymlinkTest extends TestCase
             ->method('writeError');
 
         $this->subject->perform();
-        //unlink($source_path . File::PATH_SEPARATOR . $filename);
-        //rmdir($source_path,true);
     }
 
     public function testPerformWritesErrorForFailure()
