@@ -45,6 +45,3 @@ script:
     --coverage-clover .build/log/coverage/clover.xml \
     --coverage-junit .build/log/junit.xml
   fi
-
-- >
-  find 'Tests/Functional' -wholename '*Test.php' | parallel --gnu 'echo; echo "Running functional test suite {}"; .build/bin/phpunit --coverage-clover=.build/log/coverage/{}functionaltest.clover --colors  -c .build/vendor/nimut/testing-framework/res/Configuration/FunctionalTests.xml {}'
