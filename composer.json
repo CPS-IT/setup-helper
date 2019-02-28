@@ -1,6 +1,6 @@
 {
   "name": "cpsit/setup-helper",
-  "description": "Builds project based on defaults of familie redlich digital",
+  "description": "Helps setting up a project bundle. This is a composer plugin. It performs predefined tasks on composer after update or install command.",
   "license": "GPL-2.0-or-later",
   "type": "composer-plugin",
   "require": {
