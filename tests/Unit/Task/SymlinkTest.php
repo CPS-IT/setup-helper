@@ -110,9 +110,9 @@ class SymlinkTest extends TestCase
 
         $expectedMessage = sprintf(
             TaskInterface::MESSAGE_FILE_NOT_FOUND,
-            $source_path. File::PATH_SEPARATOR .$filename
+            getcwd().File::PATH_SEPARATOR.$source_path.File::PATH_SEPARATOR.$filename
         );
-        $this->io->expects($this->once())
+        $this->io->expects($this->atLeastOnce())
             ->method('writeError')
             ->with($expectedMessage);
         $this->io->expects($this->never())

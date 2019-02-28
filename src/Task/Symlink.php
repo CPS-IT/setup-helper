@@ -62,7 +62,7 @@ class Symlink extends AbstractTask implements TaskInterface
 
         $targetFile = new File(getcwd().File::PATH_SEPARATOR.$target);
         if ($targetFile->exists()){
-            $this->io->write(
+            $this->io->writeError(
                 sprintf(
                     TaskInterface::MESSAGE_SYMLINK_ALREADY_EXISTS,
                     $target, (($targetFile->isLink()) ? ', referring to '.$targetFile->getLinkTarget(): ' as a file.')
