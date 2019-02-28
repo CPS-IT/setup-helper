@@ -1,0 +1,50 @@
+language: php
+
+sudo: false
+
+matrix:
+  fast_finish: true
+  include:
+    - php: 7.0
+    - php: 7.0
+    - php: 7.1
+    - php: 7.2
+      env: COVERAGE=1
+  allow_failures:
+    - php: 7.3
+
+env:
+  global:
+    secure: S8QheEMVpSRsPPIhYQZ4tUCTbxpM7csZ0GydJaPY8p/FAEnZLiH6xcsiTGKOljva5HDelCdBvunaWtUO/+CdKIgsdbQGbqc1aWmG6gr+ShQk4X3KzeAA91AFmkJOR6Jv69lUTm6Uo9AKs1JtuVZsOa1aoOmfApohqFuXsRBNXlg=
+
+addons:
+  apt:
+    packages:
+      - parallel
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+
+before_script:
+  - composer install
+
+script:
+- >
+  if [[ "$COVERAGE" != "1" ]]; then
+    echo;
+    echo "Running unit tests";
+    .build/bin/phpunit --colors -c tests/Unit/
+  fi
+
+- >
+  if [[ "$COVERAGE" == "1" ]]; then
+    echo;
+    echo "Running unit tests";
+    .build/bin/phpunit --colors --coverage-clover tests/Unit \
+    --coverage-clover .build/log/coverage/clover.xml \
+    --coverage-junit .build/log/junit.xml
+  fi
+
+- >
+  find 'Tests/Functional' -wholename '*Test.php' | parallel --gnu 'echo; echo "Running functional test suite {}"; .build/bin/phpunit --coverage-clover=.build/log/coverage/{}functionaltest.clover --colors  -c .build/vendor/nimut/testing-framework/res/Configuration/FunctionalTests.xml {}'
