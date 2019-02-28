@@ -32,6 +32,8 @@ interface TaskInterface
     const MESSAGE_FILE_RENAMED = 'File or folder renamed from %s to %s';
     const MESSAGE_FOLDER_CREATED = 'Folder %s created';
     const MESSAGE_FOLDER_ALREADY_EXISTS = 'Folder %s already exists';
+    const MESSAGE_SYMLINK_CREATED= 'Symlink %s to %s created.';
+    const MESSAGE_SYMLINK_ALREADY_EXISTS= 'Symlink target %s already exists%s';
 
     /**
      * Constructor for Tasks
