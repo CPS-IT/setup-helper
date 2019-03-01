@@ -23,7 +23,6 @@ before_script:
 stages:
   - build
   - test
-  - deploy
 
 build:
   stage: build
@@ -37,4 +36,4 @@ build:
 test:unit:
   stage: test
   script:
-    - .build/bin/phpunit tests/Unit
+    - .build/bin/phpunit -c tests/Build/UnitTests.xml tests/Unit
