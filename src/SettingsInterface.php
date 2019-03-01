@@ -1,6 +1,6 @@
 <?php
 
-namespace CPSIT\ProjectBuilder;
+namespace CPSIT\SetupHelper;
 
 /***************************************************************
  *  Copyright notice

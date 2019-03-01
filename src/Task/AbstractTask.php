@@ -1,6 +1,7 @@
 <?php
 
-namespace CPSIT\ProjectBuilder\Task;
+namespace CPSIT\SetupHelper\Task;
+
 use Composer\IO\IOInterface;
 use Naucon\File\File;
 
@@ -47,7 +48,7 @@ class AbstractTask
     /**
      * @return IOInterface
      */
-    public function getIo():IOInterface
+    public function getIo(): IOInterface
     {
         return $this->io;
     }

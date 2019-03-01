@@ -16,12 +16,12 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-namespace CPSIT\ProjectBuilder\Tests\Unit\Task;
+namespace CPSIT\SetupHelper\Tests\Unit\Task;
 
 use Composer\IO\IOInterface;
-use CPSIT\ProjectBuilder\Task\Symlink;
+use CPSIT\SetupHelper\Task\Symlink;
 use Naucon\File\File;
-use CPSIT\ProjectBuilder\Task\TaskInterface;
+use CPSIT\SetupHelper\Task\TaskInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 

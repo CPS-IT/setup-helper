@@ -1,8 +1,8 @@
 <?php
 
-namespace CPSIT\ProjectBuilder\Tests\Unit\Report;
-use CPSIT\ProjectBuilder\Report\Result;
-use CPSIT\ProjectBuilder\Report\ResultInterface;
+namespace CPSIT\SetupHelper\Tests\Unit\Report;
+use CPSIT\SetupHelper\Report\Result;
+use CPSIT\SetupHelper\Report\ResultInterface;
 use PHPUnit\Framework\TestCase;
 
 /***************************************************************
