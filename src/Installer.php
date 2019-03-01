@@ -29,6 +29,7 @@ use CPSIT\ProjectBuilder\SettingsInterface as SI;
 use CPSIT\ProjectBuilder\Task\MakeDirectory;
 use CPSIT\ProjectBuilder\Task\Move;
 use CPSIT\ProjectBuilder\Task\Rename;
+use CPSIT\ProjectBuilder\Task\Symlink;
 use CPSIT\ProjectBuilder\Task\TaskInterface;
 use CPSIT\ProjectBuilder\Task\Unlink;
 
@@ -42,6 +43,7 @@ final class Installer implements PluginInterface, EventSubscriberInterface
         SI::UNLINK_TASK_KEY => Unlink::class,
         SI::MOVE_TASK_KEY => Move::class,
         SI::RENAME_TASK_KEY => Rename::class,
+        SI::SYMLINK_TASK_KEY => Symlink::class,
         SI::MAKE_DIRECTORY_TASK_KEY => MakeDirectory::class
     ];
     const MESSAGE_NO_CONFIGURATION = '<info>No configuration found for setup-helper in extra section of composer.json</info>';
