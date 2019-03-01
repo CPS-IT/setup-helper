@@ -21,8 +21,14 @@ namespace CPSIT\ProjectBuilder\Task;
 
 use Naucon\File\File;
 
+/**
+ * Class Symlink
+ */
 class Symlink extends AbstractTask implements TaskInterface
 {
+    /**
+     * performs the task and returns status messages
+     */
     public function perform()
     {
         $config = $this->getConfig();
@@ -41,38 +47,43 @@ class Symlink extends AbstractTask implements TaskInterface
     }
 
     /**
+     * Generates a symlink source to target
+     * All operations are performed relative to the
+     * current working directory
+     *
      * @param string $source
      * @param string $target
-     * @return string
+     * @return void
      * @throws \Exception
      */
     protected function symlink(string $source, string $target)
     {
-        $sourceFile = new File(getcwd().File::PATH_SEPARATOR.$source);
+        $sourceFile = new File(getcwd() . File::PATH_SEPARATOR . $source);
 
         if (!$sourceFile->exists()) {
             $this->io->writeError(
                 sprintf(
                     TaskInterface::MESSAGE_FILE_NOT_FOUND,
-                    getcwd().File::PATH_SEPARATOR.$source
+                    getcwd() . File::PATH_SEPARATOR . $source
                 )
             );
-            return "";
+            return;
         }
 
-        $targetFile = new File(getcwd().File::PATH_SEPARATOR.$target);
-        if ($targetFile->exists()){
+        $targetFile = new File(getcwd() . File::PATH_SEPARATOR . $target);
+        if ($targetFile->exists()) {
+            $explanation = $targetFile->isLink() ? ', referring to ' . $targetFile->getLinkTarget() : ' as a file.';
             $this->io->writeError(
                 sprintf(
                     TaskInterface::MESSAGE_SYMLINK_ALREADY_EXISTS,
-                    $target, (($targetFile->isLink()) ? ', referring to '.$targetFile->getLinkTarget(): ' as a file.')
+                    $target, $explanation
                 )
             );
-            return "";
+            return;
         }
 
-        $result=symlink($source,$target);
-        if ($result){
+        $result = symlink($source, $target);
+        if ($result) {
             $this->io->write(
                 sprintf(
                     TaskInterface::MESSAGE_SYMLINK_CREATED,
