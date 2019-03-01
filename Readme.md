@@ -87,5 +87,23 @@ The source path is relative to the current working directory. This should always
 The directory path is relative to the current working directory. This should always be the composer root directory, if the Installer is called via composer plugin API as expected.
 Any missing directory will be created recursively.
 
+### Symlink from source to target
+```json
+{
+  "extra": {
+    "setup-helper": [
+      {
+        "symlink": {
+          "path/to/source/file": "target",
+          "file": "even/deeper/path/to/target"
+        }
+      }
+    ]
+  }
+}
+```
+The source path is relative to the current working directory. This should always be the composer root directory, if the Installer is called via composer plugin API as expected. On existing source or target no symlink is created.
+
+
 ### Upcoming
 * replace placeholder in templates
