@@ -1,6 +1,6 @@
 <?php
 
-namespace CPSIT\ProjectBuilder\Report;
+namespace CPSIT\SetupHelper\Report;
 
 /***************************************************************
  *  Copyright notice

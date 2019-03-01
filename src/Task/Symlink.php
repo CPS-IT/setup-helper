@@ -5,7 +5,7 @@ namespace CPSIT\SetupHelper\Task;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2019 Dirk Wenzel <wenzel@cps-it.de>
+ *  (c) 2019 Michael Scheppat
  *  All rights reserved
  *
  * The GNU General Public License can be found at
@@ -21,8 +21,14 @@ namespace CPSIT\SetupHelper\Task;
 
 use Naucon\File\File;
 
-class Move extends AbstractTask implements TaskInterface
+/**
+ * Class Symlink
+ */
+class Symlink extends AbstractTask implements TaskInterface
 {
+    /**
+     * performs the task and returns status messages
+     */
     public function perform()
     {
         $config = $this->getConfig();
@@ -33,7 +39,7 @@ class Move extends AbstractTask implements TaskInterface
         }
         foreach ($config as $source => $target) {
             try {
-                $this->move($source, $target);
+                $this->symlink($source, $target);
             } catch (\Exception $exception) {
                 $this->io->writeError($exception->getMessage());
             }
@@ -41,31 +47,50 @@ class Move extends AbstractTask implements TaskInterface
     }
 
     /**
+     * Generates a symlink source to target
+     * All operations are performed relative to the
+     * current working directory
+     *
      * @param string $source
      * @param string $target
-     * @return string
+     * @return void
      * @throws \Exception
      */
-    protected function move(string $source, string $target)
+    protected function symlink(string $source, string $target)
     {
-        $sourceFile = new File($source);
+        $sourceFile = new File(getcwd() . File::PATH_SEPARATOR . $source);
 
         if (!$sourceFile->exists()) {
-            $this->io->write(
+            $this->io->writeError(
                 sprintf(
                     TaskInterface::MESSAGE_FILE_NOT_FOUND,
-                    $sourceFile->getAbsolutePath()
+                    getcwd() . File::PATH_SEPARATOR . $source
+                )
+            );
+            return;
+        }
+
+        $targetFile = new File(getcwd() . File::PATH_SEPARATOR . $target);
+        if ($targetFile->exists()) {
+            $explanation = $targetFile->isLink() ? ', referring to ' . $targetFile->getLinkTarget() : ' as a file.';
+            $this->io->writeError(
+                sprintf(
+                    TaskInterface::MESSAGE_SYMLINK_ALREADY_EXISTS,
+                    $target, $explanation
+                )
+            );
+            return;
+        }
+
+        $result = symlink($source, $target);
+        if ($result) {
+            $this->io->write(
+                sprintf(
+                    TaskInterface::MESSAGE_SYMLINK_CREATED,
+                    $source, $target
                 )
             );
         }
-
-        $sourceFile->move($target);
-        $this->io->write(
-            sprintf(
-                TaskInterface::MESSAGE_FILE_MOVED,
-                $source, $target
-            )
-        );
     }
 
 }

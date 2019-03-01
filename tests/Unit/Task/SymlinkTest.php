@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2019 Dirk Wenzel
+ *  (c) 2019 Michael Scheppat
  *  All rights reserved
  *
  * The GNU General Public License can be found at
@@ -19,18 +19,19 @@
 namespace CPSIT\SetupHelper\Tests\Unit\Task;
 
 use Composer\IO\IOInterface;
-use CPSIT\SetupHelper\Task\Move;
+use CPSIT\SetupHelper\Task\Symlink;
+use Naucon\File\File;
 use CPSIT\SetupHelper\Task\TaskInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class MoveTest
+ * Class SymlinkTest
  */
-class MoveTest extends TestCase
+class SymlinkTest extends TestCase
 {
     /**
-     * @var Move
+     * @var Symlink
      */
     protected $subject;
 
@@ -47,7 +48,7 @@ class MoveTest extends TestCase
             ->setMethods(['write', 'writeError'])
             ->getMockForAbstractClass();
 
-        $this->subject = new Move($this->io);
+        $this->subject = new Symlink($this->io);
     }
 
     public function testPerformWritesMessageForEmptyConfiguration()
@@ -64,21 +65,25 @@ class MoveTest extends TestCase
 
     public function testPerformWritesMessageForSuccess()
     {
-        $source = 'foo.txt';
-        $target = 'bar';
-        mkdir($target);
-        $fileHandle = fopen($source, 'ab');
+        $base_path="";
+        $source_path= $base_path . "tmp1/tmp11/tmp111";
+        mkdir($source_path,0777,true);
+        $target_path= $base_path . "tmp1/tmp12/tmp121";
+        mkdir($target_path,0777,true);
+        $filename = 'file.txt';
+        $fileHandle = fopen($source_path.File::PATH_SEPARATOR.$filename, 'ab');
         fwrite($fileHandle, 'foo');
         fclose($fileHandle);
-
+        $target_name='a_symlink_to_a_file';
         $config = [
-            $source => $target
+            $source_path.File::PATH_SEPARATOR.$filename => $target_path.File::PATH_SEPARATOR.$target_name
         ];
-        $this->subject = new Move($this->io, $config);
+        $this->subject = new Symlink($this->io, $config);
 
         $expectedMessage = sprintf(
-            TaskInterface::MESSAGE_FILE_MOVED,
-            $source, $target
+            TaskInterface::MESSAGE_SYMLINK_CREATED,
+            $source_path. File::PATH_SEPARATOR .$filename,
+            $target_path. File::PATH_SEPARATOR .$target_name
         );
         $this->io->expects($this->once())
             ->method('write')
@@ -87,8 +92,30 @@ class MoveTest extends TestCase
             ->method('writeError');
 
         $this->subject->perform();
+    }
 
-        unlink($target . '/' . $source);
-        rmdir($target);
+    public function testPerformWritesErrorForFailure()
+    {
+        $target_path= ".";
+        $source_path="gdfgdfg";
+        $filename = 'unfound.txt';
+
+        $target_name='a_symlink_to_fail';
+        $config = [
+            $source_path.File::PATH_SEPARATOR.$filename => $target_path.File::PATH_SEPARATOR.$target_name
+        ];
+        $this->subject = new Symlink($this->io, $config);
+
+        $expectedMessage = sprintf(
+            TaskInterface::MESSAGE_FILE_NOT_FOUND,
+            getcwd().File::PATH_SEPARATOR.$source_path.File::PATH_SEPARATOR.$filename
+        );
+        $this->io->expects($this->atLeastOnce())
+            ->method('writeError')
+            ->with($expectedMessage);
+        $this->io->expects($this->never())
+            ->method('write');
+
+        $this->subject->perform();
     }
 }

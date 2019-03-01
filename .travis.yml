@@ -1,0 +1,31 @@
+language: php
+
+sudo: false
+
+matrix:
+  fast_finish: true
+  include:
+    - php: 7.0
+    - php: 7.1
+    - php: 7.2
+  allow_failures:
+    - php: 7.3
+
+env:
+  global:
+    secure: S8QheEMVpSRsPPIhYQZ4tUCTbxpM7csZ0GydJaPY8p/FAEnZLiH6xcsiTGKOljva5HDelCdBvunaWtUO/+CdKIgsdbQGbqc1aWmG6gr+ShQk4X3KzeAA91AFmkJOR6Jv69lUTm6Uo9AKs1JtuVZsOa1aoOmfApohqFuXsRBNXlg=
+
+addons:
+  apt:
+    packages:
+      - parallel
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+
+before_script:
+  - composer install
+
+script:
+  - .build/bin/phpunit -c tests/Build/UnitTests.xml tests/Unit
