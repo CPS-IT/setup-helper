@@ -1,6 +1,6 @@
 <?php
 
-namespace CPSIT\ProjectBuilder;
+namespace CPSIT\SetupHelper;
 
 /***************************************************************
  *  Copyright notice
@@ -25,13 +25,13 @@ use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
-use CPSIT\ProjectBuilder\SettingsInterface as SI;
-use CPSIT\ProjectBuilder\Task\MakeDirectory;
-use CPSIT\ProjectBuilder\Task\Move;
-use CPSIT\ProjectBuilder\Task\Rename;
-use CPSIT\ProjectBuilder\Task\Symlink;
-use CPSIT\ProjectBuilder\Task\TaskInterface;
-use CPSIT\ProjectBuilder\Task\Unlink;
+use CPSIT\SetupHelper\SettingsInterface as SI;
+use CPSIT\SetupHelper\Task\MakeDirectory;
+use CPSIT\SetupHelper\Task\Move;
+use CPSIT\SetupHelper\Task\Rename;
+use CPSIT\SetupHelper\Task\Symlink;
+use CPSIT\SetupHelper\Task\TaskInterface;
+use CPSIT\SetupHelper\Task\Unlink;
 
 /**
  * Class Installer

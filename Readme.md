@@ -1,9 +1,9 @@
 [![Build Status](https://travis-ci.org/CPS-IT/setup-helper.svg?branch=master)](https://travis-ci.org/CPS-IT/setup-helper)
 
-Project Builder
-===============
+Setup Helper
+============
 
-Builds projects based on configuration and templates.
+Helps setting up project bundles based on configuration and templates.
 
 This is a composer plugin. It performs predefined tasks on composer after `update` or `install` command.
 

@@ -31,15 +31,15 @@
   },
   "autoload": {
     "psr-4": {
-      "CPSIT\\ProjectBuilder\\": "src"
+      "CPSIT\\SetupHelper\\": "src"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "CPSIT\\ProjectBuilder\\Tests\\": "tests/"
+      "CPSIT\\SetupHelper\\Tests\\": "tests/"
     }
   },
   "extra": {
-    "class": "CPSIT\\ProjectBuilder\\Installer"
+    "class": "CPSIT\\SetupHelper\\Installer"
   }
 }

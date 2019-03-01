@@ -1,5 +1,5 @@
 <?php
-namespace CPSIT\ProjectBuilder\Task;
+namespace CPSIT\SetupHelper\Task;
 
 /***************************************************************
  *  Copyright notice
