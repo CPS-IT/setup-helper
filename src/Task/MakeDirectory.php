@@ -1,4 +1,5 @@
 <?php
+
 namespace CPSIT\SetupHelper\Task;
 
 /***************************************************************
@@ -47,7 +48,7 @@ class MakeDirectory extends AbstractTask implements TaskInterface
                     );
                     continue;
                 }
-                if ($file->mkdirs()){
+                if ($file->mkdirs()) {
                     $this->io->write(
                         sprintf(
                             TaskInterface::MESSAGE_FOLDER_CREATED,

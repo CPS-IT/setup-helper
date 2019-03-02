@@ -29,6 +29,7 @@ use CPSIT\SetupHelper\SettingsInterface as SI;
 use CPSIT\SetupHelper\Task\MakeDirectory;
 use CPSIT\SetupHelper\Task\Move;
 use CPSIT\SetupHelper\Task\Rename;
+use CPSIT\SetupHelper\Task\Replace;
 use CPSIT\SetupHelper\Task\Symlink;
 use CPSIT\SetupHelper\Task\TaskInterface;
 use CPSIT\SetupHelper\Task\Unlink;
@@ -44,7 +45,8 @@ final class Installer implements PluginInterface, EventSubscriberInterface
         SI::MOVE_TASK_KEY => Move::class,
         SI::RENAME_TASK_KEY => Rename::class,
         SI::SYMLINK_TASK_KEY => Symlink::class,
-        SI::MAKE_DIRECTORY_TASK_KEY => MakeDirectory::class
+        SI::MAKE_DIRECTORY_TASK_KEY => MakeDirectory::class,
+        SI::REPLACE_TASK_KEY => Replace::class
     ];
     const MESSAGE_NO_CONFIGURATION = '<info>No configuration found for setup-helper in extra section of composer.json</info>';
 
