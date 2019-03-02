@@ -1,4 +1,5 @@
 <?php
+
 namespace CPSIT\SetupHelper\Task;
 
 /***************************************************************
@@ -32,8 +33,15 @@ interface TaskInterface
     const MESSAGE_FILE_RENAMED = 'File or folder renamed from %s to %s';
     const MESSAGE_FOLDER_CREATED = 'Folder %s created';
     const MESSAGE_FOLDER_ALREADY_EXISTS = 'Folder %s already exists';
-    const MESSAGE_SYMLINK_CREATED= 'Symlink %s to %s created.';
-    const MESSAGE_SYMLINK_ALREADY_EXISTS= 'Symlink target %s already exists%s';
+    const MESSAGE_SYMLINK_CREATED = 'Symlink %s to %s created.';
+    const MESSAGE_SYMLINK_ALREADY_EXISTS = 'Symlink target %s already exists%s';
+    const MESSAGE_REPLACED_IN_FILE = 'Searched pattern "%s" in file %s and replaced %b occurrences by "%s"';
+    const MESSAGE_EMPTY_KEY = 'Required configuration key "%s" for task "%s" is not set or empty.';
+    const MESSAGE_CONFLICTING_KEYS = 'Keys "%s" and "%s" can not be set both for task "%s.';
+    const KEY_PATH = 'path';
+    const KEY_SEARCH = 'search';
+    const KEY_REPLACE = 'replace';
+    const KEY_ASK = 'ask';
 
     /**
      * Constructor for Tasks

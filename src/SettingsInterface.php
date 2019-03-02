@@ -24,6 +24,7 @@ interface SettingsInterface
     const UNLINK_TASK_KEY = 'unlink';
     const MOVE_TASK_KEY = 'move';
     const RENAME_TASK_KEY = 'rename';
+    const REPLACE_TASK_KEY = 'replace';
     const MAKE_DIRECTORY_TASK_KEY = 'makeDirectory';
     const SYMLINK_TASK_KEY = 'symlink';
 }

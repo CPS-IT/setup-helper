@@ -1,3 +1,9 @@
+2019-03-03         [RELEASE] Release of project-builder 0.7.0 (Dirk Wenzel)
+2019-03-03 5ac424d [TASK] Task/Replace now reports occurrences of replaced string (Dirk Wenzel)
+2019-03-03 14a756d [BUGFIX] fixed error caused by unexpected exception in Task/Replace (Dirk Wenzel)
+2019-03-02 4b717e1 [TASK] task "replace" implemented (Dirk Wenzel)
+2019-03-02 d33f9bc [CI] configuration for sonar added (Dirk Wenzel)
+
 2019-03-01         [RELEASE] Release of setup-helper 0.6.0 (Dirk Wenzel)
 2019-03-01 e6b69fe [TASK] namespace corrected (Dirk Wenzel)
 2019-03-01 684bd4b [TASK] coding style (Dirk Wenzel)
