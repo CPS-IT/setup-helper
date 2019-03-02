@@ -20,6 +20,7 @@ namespace CPSIT\SetupHelper\Task;
  ***************************************************************/
 
 use CPSIT\SetupHelper\SettingsInterface;
+use Naucon\File\File;
 use Naucon\File\FileWriter;
 
 /**
@@ -121,7 +122,7 @@ class Replace extends AbstractTask implements TaskInterface
             $replace = $this->io->ask($configuration[TaskInterface::KEY_ASK]);
         }
 
-        $file = new FileWriter($this->getWorkingDirectory() . $path, 'r+');
+        $file = new File($this->getWorkingDirectory() . $path);
         if (!$file->exists()) {
             $this->io->writeError(
                 sprintf(
@@ -133,9 +134,10 @@ class Replace extends AbstractTask implements TaskInterface
             return;
         }
 
-        $content = $file->read();
-        $file->clear();
-        $file->write(str_replace(
+        $fileWriter = new FileWriter($file, 'r+');
+        $content = $fileWriter->read();
+        $fileWriter->clear();
+        $fileWriter->write(str_replace(
                 $search, $replace, $content)
         );
 
