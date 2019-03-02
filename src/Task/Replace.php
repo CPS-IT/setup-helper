@@ -137,9 +137,24 @@ class Replace extends AbstractTask implements TaskInterface
         $fileWriter = new FileWriter($file, 'r+');
         $content = $fileWriter->read();
         $fileWriter->clear();
-        $fileWriter->write(str_replace(
-                $search, $replace, $content)
+        $count = 0;
+        $fileWriter->write(
+            str_replace(
+                $search,
+                $replace,
+                $content,
+                $count
+            )
         );
 
+        $this->io->write(
+            sprintf(
+                TaskInterface::MESSAGE_REPLACED_IN_FILE,
+                $search,
+                $fileWriter->getPathname(),
+                $count,
+                $replace
+            )
+        );
     }
 }

@@ -193,6 +193,17 @@ class ReplaceTest extends TestCase
             ->method('getWorkingDirectory')
             ->willReturn(vfsStream::url($fileDirectory . '/'));
 
+        $expectedMessage = sprintf(
+            TaskInterface::MESSAGE_REPLACED_IN_FILE,
+            $search,
+            $mockFile->url(),
+            1,
+            $replace
+        );
+
+        $this->io->expects($this->once())
+            ->method('write')
+            ->with($expectedMessage);
 
         $expectedContent = str_replace($search, $replace, $initialContent);
 

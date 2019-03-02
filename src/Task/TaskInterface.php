@@ -35,7 +35,7 @@ interface TaskInterface
     const MESSAGE_FOLDER_ALREADY_EXISTS = 'Folder %s already exists';
     const MESSAGE_SYMLINK_CREATED = 'Symlink %s to %s created.';
     const MESSAGE_SYMLINK_ALREADY_EXISTS = 'Symlink target %s already exists%s';
-    const MESSAGE_REPLACED_IN_FILE = 'Searched pattern "%s" in file %s and replaced %i occurrences by %s';
+    const MESSAGE_REPLACED_IN_FILE = 'Searched pattern "%s" in file %s and replaced %b occurrences by "%s"';
     const MESSAGE_EMPTY_KEY = 'Required configuration key "%s" for task "%s" is not set or empty.';
     const MESSAGE_CONFLICTING_KEYS = 'Keys "%s" and "%s" can not be set both for task "%s.';
     const KEY_PATH = 'path';
