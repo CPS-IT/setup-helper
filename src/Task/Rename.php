@@ -78,5 +78,4 @@ class Rename extends AbstractTask implements TaskInterface
 
     }
 
-
 }

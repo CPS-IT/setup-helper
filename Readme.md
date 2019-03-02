@@ -105,5 +105,42 @@ Any missing directory will be created recursively.
 The source path is relative to the current working directory. This should always be the composer root directory, if the Installer is called via composer plugin API as expected. On existing source or target no symlink is created.
 
 
-### Upcoming
-* replace placeholder in templates
+### Replace 
+
+* Replace a string with another string:
+```json
+{
+  "extra": {
+    "setup-helper": [
+      {
+        "replace": [
+          {
+            "path": "path/to/file",
+            "search": "string-to-replace", 
+            "replace": "replacement string"
+           }           
+        ]
+      }
+    ]
+  }
+}
+```
+
+* Replace a string with a string given as answer to a question (interactively)
+```json
+{
+  "extra": {
+    "setup-helper": [
+      {
+        "replace": [
+           {
+             "path": "path/to/file",
+             "search": "string-or-pattern-to-replace", 
+             "ask": "Question to ask for (Answer replaces pattern)"
+           }           
+        ]
+      }
+    ]
+  }
+}
+```

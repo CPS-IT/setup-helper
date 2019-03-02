@@ -133,7 +133,7 @@ class RenameTest extends TestCase
         $fixturePath = $workingDirectory . self::FIXTURE_PATH;
 
         if (file_exists($fixturePath . $newName)) {
-            unlink($fixturePath. $newName);
+            unlink($fixturePath . $newName);
         }
     }
 }
