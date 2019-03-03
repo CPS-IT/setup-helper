@@ -4,7 +4,7 @@
   "license": "GPL-2.0-or-later",
   "type": "composer-plugin",
   "require": {
-    "php": ">=7.0.0 <7.3.0",
+    "php": ">=7.0.0",
     "composer-plugin-api": "^1.0.0",
     "naucon/file": "^1.0"
   },
