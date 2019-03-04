@@ -75,7 +75,7 @@ class ReplaceTest extends TestCase
 
         $expectedMessage = sprintf(
             TaskInterface::MESSAGE_FILE_NOT_FOUND,
-            $invalidFilePath
+            $this->subject->getWorkingDirectory() . $invalidFilePath
         );
         $this->io->expects($this->once())
             ->method('writeError')
