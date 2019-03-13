@@ -6,7 +6,8 @@
   "require": {
     "php": ">=7.0.0 <7.3.0",
     "composer-plugin-api": "^1.0.0",
-    "naucon/file": "^1.0"
+    "naucon/file": "^1.0",
+    "mikey179/vfsstream": "^1.6"
   },
   "authors": [
     {
@@ -23,12 +24,21 @@
       "mkdir -p .build/log/coverage/"
     ]
   },
+  "repositories":
+      [
+          {
+            "type": "vcs",
+            "url": "git@github.com:CPS-IT/glob.git"
+          }
+      ],
+
   "require-dev": {
     "roave/security-advisories": "dev-master",
     "phpunit/phpunit": "^6.5.0 || ^7.0.0",
     "composer/composer": "^1.6.3",
     "naucon/file": "^1.0",
-    "mikey179/vfsStream": "^1.6"
+    "mikey179/vfsstream": "^1.6",
+    "webmozart/glob": "^4.1.2-dev"
   },
   "autoload": {
     "psr-4": {
