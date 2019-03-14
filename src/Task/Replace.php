@@ -23,6 +23,11 @@ use CPSIT\SetupHelper\Processor\SearchReplaceFile;
 use CPSIT\SetupHelper\SettingsInterface;
 use CPSIT\SetupHelper\Task\Dto\FileSearch;
 
+use CPSIT\SetupHelper\File\GlobResolver;
+use CPSIT\SetupHelper\File\ResolverInterface;
+
+use Composer\IO\IOInterface;
+
 /**
  * Class Replace
  */
@@ -32,6 +37,22 @@ class Replace extends AbstractTask implements TaskInterface
         TaskInterface::KEY_PATH,
         TaskInterface::KEY_SEARCH
     ];
+
+    protected $resolver;
+
+    /**
+     * AbstractTask constructor.
+     * @param IOInterface $IO
+     * @param $config
+     */
+    public function __construct(IOInterface $IO, array $config = [])
+    {
+        $this->resolver= new GlobResolver();
+        $this->io = $IO;
+        $this->config = $config;
+    }
+
+
 
     public function perform()
     {
@@ -110,24 +131,43 @@ class Replace extends AbstractTask implements TaskInterface
      */
     protected function process(array $configuration)
     {
-        $fileSearch = new FileSearch();
-
-        $fileSearch->setPath(
-            $this->getWorkingDirectory() . $configuration[TaskInterface::KEY_PATH]
-        )->setSearch($configuration[TaskInterface::KEY_SEARCH]);
-
-        if (
-        !empty($configuration[TaskInterface::KEY_REPLACE])) {
-            $fileSearch->setReplace($configuration[TaskInterface::KEY_REPLACE]);
+        $resolver_pattern = $this->getWorkingDirectory() . $configuration[TaskInterface::KEY_PATH];
+        $search = $configuration[TaskInterface::KEY_SEARCH];
+        $replace ="";
+        if (!empty($configuration[TaskInterface::KEY_ASK])) {
+            $replace = $this->io->ask($configuration[TaskInterface::KEY_ASK]);
+        }
+        if (!empty($configuration[TaskInterface::KEY_REPLACE])) {
+            $replace = $configuration[TaskInterface::KEY_REPLACE];
         }
 
-        if (!empty($configuration[TaskInterface::KEY_ASK])) {
-            $fileSearch->setReplace(
-                $this->io->ask($configuration[TaskInterface::KEY_ASK])
+        $resolver= $this->resolver;
+        $resolver->setPattern($resolver_pattern);
+        $resolvedFiles =  $resolver->resolve();
+
+        if (empty($resolvedFiles)){
+            $this->io->writeError(
+                sprintf(
+                    TaskInterface::MESSAGE_FILE_NOT_FOUND,
+                    $resolver_pattern
+                )
             );
         }
 
-        $processor = new SearchReplaceFile($this->io, $fileSearch);
-        $processor->process();
+        foreach ( $resolvedFiles as $filepath ){
+            $fileSearch = new FileSearch();
+
+            $fileSearch->setPath(
+                $filepath
+            )->setSearch($configuration[TaskInterface::KEY_SEARCH]);
+
+            $fileSearch->setReplace(
+                $replace
+            );
+
+            $processor = new SearchReplaceFile($this->io, $fileSearch);
+            $processor->process();
+        }
+
     }
 }
