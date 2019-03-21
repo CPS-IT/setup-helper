@@ -25,16 +25,11 @@ addons:
 
 cache:
   directories:
-    # temporarily disabled
-    #- $HOME/.composer/cache
     - $HOME/.sonar/cache
-
-before_script:
-  - composer clear-cache
-  - composer install -vv
 
 script:
 - >
+  composer install -vv
   if [[ "$COVERAGE" != "1" ]]; then
     echo;
     echo "Running unit tests";
