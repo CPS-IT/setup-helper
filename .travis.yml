@@ -29,7 +29,7 @@ cache:
     - $HOME/.sonar/cache
 
 before_script:
-  - composer install
+  - composer install -vv
 
 script:
 - >
