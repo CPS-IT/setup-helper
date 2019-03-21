@@ -25,7 +25,8 @@ addons:
 
 cache:
   directories:
-    - $HOME/.composer/cache
+    # temporarily disabled
+    #- $HOME/.composer/cache
     - $HOME/.sonar/cache
 
 before_script:
