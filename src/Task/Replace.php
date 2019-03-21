@@ -19,14 +19,11 @@ namespace CPSIT\SetupHelper\Task;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Composer\IO\IOInterface;
+use CPSIT\SetupHelper\File\GlobResolver;
 use CPSIT\SetupHelper\Processor\SearchReplaceFile;
 use CPSIT\SetupHelper\SettingsInterface;
 use CPSIT\SetupHelper\Task\Dto\FileSearch;
-
-use CPSIT\SetupHelper\File\GlobResolver;
-use CPSIT\SetupHelper\File\ResolverInterface;
-
-use Composer\IO\IOInterface;
 
 /**
  * Class Replace
@@ -47,11 +44,10 @@ class Replace extends AbstractTask implements TaskInterface
      */
     public function __construct(IOInterface $IO, array $config = [])
     {
-        $this->resolver= new GlobResolver();
+        $this->resolver = new GlobResolver();
         $this->io = $IO;
         $this->config = $config;
     }
-
 
 
     public function perform()
@@ -132,8 +128,8 @@ class Replace extends AbstractTask implements TaskInterface
     protected function process(array $configuration)
     {
         $resolver_pattern = $this->getWorkingDirectory() . $configuration[TaskInterface::KEY_PATH];
-        $search = $configuration[TaskInterface::KEY_SEARCH];
-        $replace ="";
+
+        $replace = "";
         if (!empty($configuration[TaskInterface::KEY_ASK])) {
             $replace = $this->io->ask($configuration[TaskInterface::KEY_ASK]);
         }
@@ -141,11 +137,11 @@ class Replace extends AbstractTask implements TaskInterface
             $replace = $configuration[TaskInterface::KEY_REPLACE];
         }
 
-        $resolver= $this->resolver;
+        $resolver = $this->resolver;
         $resolver->setPattern($resolver_pattern);
-        $resolvedFiles =  $resolver->resolve();
+        $resolvedFiles = $resolver->resolve();
 
-        if (empty($resolvedFiles)){
+        if (empty($resolvedFiles)) {
             $this->io->writeError(
                 sprintf(
                     TaskInterface::MESSAGE_FILE_NOT_FOUND,
@@ -154,7 +150,7 @@ class Replace extends AbstractTask implements TaskInterface
             );
         }
 
-        foreach ( $resolvedFiles as $filepath ){
+        foreach ($resolvedFiles as $filepath) {
             $fileSearch = new FileSearch();
 
             $fileSearch->setPath(
