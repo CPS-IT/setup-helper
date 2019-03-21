@@ -28,8 +28,8 @@ cache:
     - $HOME/.sonar/cache
 
 script:
+- composer install -vv
 - >
-  composer install -vv
   if [[ "$COVERAGE" != "1" ]]; then
     echo;
     echo "Running unit tests";
