@@ -21,13 +21,6 @@ namespace CPSIT\SetupHelper\File;
 
 
 interface ResolverInterface {
-    /**
-     * Constructor for Resolver
-     *
-     * ReolverInterface constructor.
-     */
-    public function __construct();
-
     public function setPattern(string $pattern);
 
     /**

@@ -18,52 +18,47 @@ namespace CPSIT\SetupHelper\File;
  * GNU General Public License for more details.
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 use Webmozart\Glob\Glob;
 
-Class GlobResolver implements ResolverInterface {
+Class GlobResolver implements ResolverInterface
+{
     protected $pattern;
 
     /**
-     * Constructor for Resolver
-     *
-     * GlobReolver constructor.
-     * @param string
+     * Gets the pattern to be resolved
+     * @return string
      */
-    public function __construct(){
+    public function getPattern()
+    {
+        return $this->pattern;
     }
 
     /**
      * Sets the pattern to be resolved
      * @param string
      */
-    public function setPattern(string $pattern){
-        $this->pattern=$pattern;
-    }
-
-    /**
-     * Gets the pattern to be resolved
-     * @return string
-     */
-    public function getPattern(){
-        return $this->pattern;
-    }
-
-    // Does not support flag GLOB_BRACE
-    protected function rglob($pattern, $flags = 0) {
-        $files = Glob::glob($pattern, $flags);
-        foreach (Glob::glob(dirname($pattern).'/*', GLOB_ONLYDIR|GLOB_NOSORT) as $dir) {
-            $files = array_merge($files, $this->rglob($dir.'/'.basename($pattern), $flags));
-        }
-        return $files;
+    public function setPattern(string $pattern)
+    {
+        $this->pattern = $pattern;
     }
 
     /**
      * Resolves path pattern to
-     * return list of filepaths
+     * return list of file paths
      * @return array
      */
-    public function resolve(){
-        $result=  $this->rglob($this->pattern);
-        return $result;
+    public function resolve()
+    {
+        return $this->globRecursive($this->pattern);
+    }
+
+    protected function globRecursive($pattern, $flags = 0)
+    {
+        $files = Glob::glob($pattern, $flags);
+        foreach (Glob::glob(dirname($pattern) . '/*', GLOB_ONLYDIR | GLOB_NOSORT) as $dir) {
+            $files = array_merge($files, $this->globRecursive($dir . '/' . basename($pattern), $flags));
+        }
+        return $files;
     }
 }
