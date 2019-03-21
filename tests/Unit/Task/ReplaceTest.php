@@ -43,7 +43,7 @@ class ReplaceTest extends TestCase
     public function setUp()/* The :void return type declaration that should be here would cause a BC issue */
     {
         $this->io = $this->getMockBuilder(IOInterface::class)
-            ->setMethods(['write', 'writeError'])
+            ->setMethods(['write', 'writeError', 'ask'])
             ->getMockForAbstractClass();
 
         $this->subject = new Replace($this->io);
@@ -204,6 +204,55 @@ class ReplaceTest extends TestCase
         $this->io->expects($this->once())
             ->method('write')
             ->with($expectedMessage);
+
+        $expectedContent = str_replace($search, $replace, $initialContent);
+
+        $this->subject->setConfig($configuration);
+        $this->subject->perform();
+        $this->assertSame(
+            $expectedContent,
+            $mockFile->getContent()
+        );
+
+    }
+
+    public function testPerformAsksForReplacement()
+    {
+        vfsStreamWrapper::register();
+
+        $search = '{{boom}}';
+        $initialContent = 'foo-{{boom}}';
+        $ask = 'ask me a question';
+        $replace = 'foo';
+
+        $fileDirectory = 'boom';
+        $fileName = 'foo.csv';
+
+        $configuration = [
+            [
+                TaskInterface::KEY_PATH => $fileName,
+                TaskInterface::KEY_SEARCH => $search,
+                TaskInterface::KEY_ASK => $ask
+            ],
+        ];
+        $this->subject = $this->getMockBuilder(Replace::class)
+            ->setConstructorArgs([$this->io, $configuration])
+            ->setMethods(['getWorkingDirectory'])
+            ->getMock();
+
+        vfsStream::setup($fileDirectory);
+        $mockFile = vfsStream::newFile($fileName);
+        $mockFile->setContent($initialContent);
+        vfsStreamWrapper::getRoot()->addChild($mockFile);
+
+        $this->subject->expects($this->once())
+            ->method('getWorkingDirectory')
+            ->willReturn(vfsStream::url($fileDirectory . '/'));
+
+        $this->io->expects($this->once())
+            ->method('ask')
+            ->with($ask)
+            ->willReturn($replace);
 
         $expectedContent = str_replace($search, $replace, $initialContent);
 

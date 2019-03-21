@@ -54,10 +54,8 @@ class Replace extends AbstractTask implements TaskInterface
     {
         $config = $this->getConfig();
         if (empty($config)) {
-            $this->io->write(
-
-                get_class($this) . ': ' . TaskInterface::MESSAGE_EMPTY_CONFIGURATION
-            );
+            $message = get_class($this) . ': ' . TaskInterface::MESSAGE_EMPTY_CONFIGURATION;
+            $this->io->write($message);
         }
 
         foreach ($config as $singleConfig) {
@@ -127,7 +125,19 @@ class Replace extends AbstractTask implements TaskInterface
      */
     protected function process(array $configuration)
     {
-        $resolver_pattern = $this->getWorkingDirectory() . $configuration[TaskInterface::KEY_PATH];
+        $pattern = $this->getWorkingDirectory() . $configuration[TaskInterface::KEY_PATH];
+
+        $this->resolver->setPattern($pattern);
+        $resolvedFiles = $this->resolver->resolve();
+
+        if (empty($resolvedFiles)) {
+            $this->io->writeError(
+                sprintf(
+                    TaskInterface::MESSAGE_FILE_NOT_FOUND,
+                    $pattern
+                )
+            );
+        }
 
         $replace = "";
         if (!empty($configuration[TaskInterface::KEY_ASK])) {
@@ -137,29 +147,12 @@ class Replace extends AbstractTask implements TaskInterface
             $replace = $configuration[TaskInterface::KEY_REPLACE];
         }
 
-        $resolver = $this->resolver;
-        $resolver->setPattern($resolver_pattern);
-        $resolvedFiles = $resolver->resolve();
-
-        if (empty($resolvedFiles)) {
-            $this->io->writeError(
-                sprintf(
-                    TaskInterface::MESSAGE_FILE_NOT_FOUND,
-                    $resolver_pattern
-                )
-            );
-        }
-
         foreach ($resolvedFiles as $filepath) {
             $fileSearch = new FileSearch();
 
-            $fileSearch->setPath(
-                $filepath
-            )->setSearch($configuration[TaskInterface::KEY_SEARCH]);
-
-            $fileSearch->setReplace(
-                $replace
-            );
+            $fileSearch->setPath($filepath)
+                ->setSearch($configuration[TaskInterface::KEY_SEARCH])
+                ->setReplace($replace);
 
             $processor = new SearchReplaceFile($this->io, $fileSearch);
             $processor->process();
