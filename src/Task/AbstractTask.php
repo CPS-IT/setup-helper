@@ -4,6 +4,7 @@ namespace CPSIT\SetupHelper\Task;
 
 use Composer\IO\IOInterface;
 use Naucon\File\File;
+use Symfony\Component\Filesystem\Filesystem;
 
 
 /***************************************************************
@@ -35,14 +36,24 @@ class AbstractTask
     protected $config;
 
     /**
+     * @var Filesystem
+     */
+    protected $fileSystem;
+
+    /**
      * AbstractTask constructor.
      * @param IOInterface $IO
-     * @param $config
+     * @param array $config
+     * @param Filesystem $fileSystem
      */
-    public function __construct(IOInterface $IO, array $config = [])
+    public function __construct(IOInterface $IO, array $config = [], Filesystem $fileSystem = null)
     {
         $this->io = $IO;
         $this->config = $config;
+        if (null === $fileSystem) {
+            $fileSystem =  new Filesystem();
+        }
+        $this->fileSystem = $fileSystem;
     }
 
     /**
@@ -74,12 +85,22 @@ class AbstractTask
     }
 
     /**
-     * Get the working dirctory of the current script
+     * Get the working directory of the current script
      * (This should always be the composer root path)
      * @return string
      */
     public function getWorkingDirectory(): string
     {
         return getcwd() . File::PATH_SEPARATOR;
+    }
+
+    /**
+     * Get the file system
+     *
+     * @return Filesystem
+     */
+    public function getFileSystem(): Filesystem
+    {
+        return $this->fileSystem;
     }
 }
