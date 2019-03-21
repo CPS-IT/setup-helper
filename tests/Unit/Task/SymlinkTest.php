@@ -156,4 +156,43 @@ class SymlinkTest extends TestCase
 
         $this->subject->perform();
     }
+
+    public function testPerformWritesErrorForExistingFile()
+    {
+        $sourceFilePath = 'sourceFolder' . File::PATH_SEPARATOR . 'sourceFile.txt';
+        $linkPath = 'targetFolder' . File::PATH_SEPARATOR . 'symlinkToSourceFile';
+
+        $config = [
+            $sourceFilePath => $linkPath
+        ];
+
+        $this->subject = new Symlink($this->io, $config, $this->fileSystem);
+
+        $this->fileSystem->expects($this->exactly(2))
+            ->method('exists')
+            ->withConsecutive(
+                [$sourceFilePath],
+                [$linkPath]
+            )
+            ->willReturnOnConsecutiveCalls(
+                true, true
+            );
+
+        $explanation =  ' as a file.';
+
+        $expectedMessage = sprintf(
+            TaskInterface::MESSAGE_SYMLINK_ALREADY_EXISTS,
+            $linkPath, $explanation
+        );
+
+        $this->io->expects($this->once())
+            ->method('writeError')
+            ->with($expectedMessage);
+        $this->fileSystem->expects($this->never())
+            ->method('symlink');
+        $this->io->expects($this->never())
+            ->method('write');
+
+        $this->subject->perform();
+    }
 }
