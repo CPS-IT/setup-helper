@@ -23,6 +23,7 @@ use CPSIT\SetupHelper\Task\AbstractTask;
 use Naucon\File\File;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Filesystem\Filesystem;
 
 class AbstractTaskTest extends TestCase
 {
@@ -64,6 +65,14 @@ class AbstractTaskTest extends TestCase
         $this->assertSame(
             $this->config,
             $this->subject->getConfig()
+        );
+    }
+
+    public function testConstructorSetsFileSystem()
+    {
+        $this->assertInstanceOf(
+            Filesystem::class,
+            $this->subject->getFileSystem()
         );
     }
 

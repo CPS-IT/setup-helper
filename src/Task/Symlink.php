@@ -19,8 +19,6 @@ namespace CPSIT\SetupHelper\Task;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use Naucon\File\File;
-
 /**
  * Class Symlink
  */
@@ -39,7 +37,7 @@ class Symlink extends AbstractTask implements TaskInterface
         }
         foreach ($config as $source => $target) {
             try {
-                $this->symlink($source, $target);
+                $this->process($source, $target);
             } catch (\Exception $exception) {
                 $this->io->writeError($exception->getMessage());
             }
@@ -47,50 +45,43 @@ class Symlink extends AbstractTask implements TaskInterface
     }
 
     /**
-     * Generates a symlink source to target
+     * Generates a symlink to target
      * All operations are performed relative to the
      * current working directory
      *
-     * @param string $source
      * @param string $target
+     * @param string $link
      * @return void
      * @throws \Exception
      */
-    protected function symlink(string $source, string $target)
+    protected function process(string $target, string $link)
     {
-        $sourceFile = new File(getcwd() . File::PATH_SEPARATOR . $source);
-
-        if (!$sourceFile->exists()) {
-            $this->io->writeError(
-                sprintf(
-                    TaskInterface::MESSAGE_FILE_NOT_FOUND,
-                    getcwd() . File::PATH_SEPARATOR . $source
-                )
+        if (!$this->fileSystem->exists($target)) {
+            $message = sprintf(
+                TaskInterface::MESSAGE_FILE_NOT_FOUND,
+                $this->getWorkingDirectory() . $target
             );
+
+            $this->io->writeError($message);
             return;
         }
 
-        $targetFile = new File(getcwd() . File::PATH_SEPARATOR . $target);
-        if ($targetFile->exists()) {
-            $explanation = $targetFile->isLink() ? ', referring to ' . $targetFile->getLinkTarget() : ' as a file.';
-            $this->io->writeError(
-                sprintf(
-                    TaskInterface::MESSAGE_SYMLINK_ALREADY_EXISTS,
-                    $target, $explanation
-                )
+        if ($this->fileSystem->exists($link)) {
+            $explanation = is_link($link) ? ', referring to ' . $this->fileSystem->readlink($link) : ' as a file.';
+            $message = sprintf(
+                TaskInterface::MESSAGE_SYMLINK_ALREADY_EXISTS,
+                $link, $explanation
             );
+            $this->io->writeError($message);
             return;
         }
 
-        $result = symlink($source, $target);
-        if ($result) {
-            $this->io->write(
-                sprintf(
-                    TaskInterface::MESSAGE_SYMLINK_CREATED,
-                    $source, $target
-                )
-            );
-        }
+        $this->fileSystem->symlink($target, $link);
+        $message = sprintf(
+            TaskInterface::MESSAGE_SYMLINK_CREATED,
+            $target, $link
+        );
+        $this->io->write($message);
     }
 
 }

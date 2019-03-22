@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/CPS-IT/setup-helper.svg?branch=master)](https://travis-ci.org/CPS-IT/setup-helper)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=CPS-IT_setup-helper&metric=alert_status)](https://sonarcloud.io/dashboard?id=CPS-IT_setup-helper)
 
 Setup Helper
 ============
@@ -36,7 +37,7 @@ Add a key `setup-helper` to to the `extra` section of your `composer.json`.
 * there is **no confirmation request**. Any existing file or folder will be removed!
 
 
-### Move files or folders
+#### Move files or folders
 ```json
 {
   "extra": {
@@ -53,7 +54,7 @@ Add a key `setup-helper` to to the `extra` section of your `composer.json`.
 ```
 **Note**: _Move_ does not rename a file or folder. If required combine it with a _Rename_ task. 
 
-### Rename files or folders
+#### Rename files or folders
 ```json
 {
   "extra": {
@@ -70,7 +71,7 @@ Add a key `setup-helper` to to the `extra` section of your `composer.json`.
 ```
 The source path is relative to the current working directory. This should always be the composer root directory, if the Installer is called via composer plugin API as expected.
 
-### Make directory
+#### Make directory
 ```json
 {
   "extra": {
@@ -87,7 +88,7 @@ The source path is relative to the current working directory. This should always
 The directory path is relative to the current working directory. This should always be the composer root directory, if the Installer is called via composer plugin API as expected.
 Any missing directory will be created recursively.
 
-### Symlink from source to target
+#### Symlink from source to target
 ```json
 {
   "extra": {
@@ -105,7 +106,7 @@ Any missing directory will be created recursively.
 The source path is relative to the current working directory. This should always be the composer root directory, if the Installer is called via composer plugin API as expected. On existing source or target no symlink is created.
 
 
-### Replace 
+#### Replace 
 
 * Replace a string with another string:
 ```json
@@ -144,3 +145,25 @@ The source path is relative to the current working directory. This should always
   }
 }
 ```
+
+The `path` key respects Ant-like globbing.
+
+Syntax:
+
+* `?` matches any character
+* `*` matches zero or more characters, except `/`
+* `/**/` matches zero or more directory names
+* `[abc]` matches a single character `a`, `b` or `c`
+* `[a-c]` matches a single character `a`, `b` or `c`
+* `[^abc]` matches any character but `a`, `b` or `c`
+* `[^a-c]` matches any character but `a`, `b` or `c`
+* `{ab,cd}` matches `ab` or `cd`
+
+E.g. `"path": /path/to/dir/*.css` will select all files ending in `.css` in that directory.
+
+See documentation of [glob library](https://github.com/webmozart/glob) for details.
+
+### Caveats
+
+Currently we rely on a [fork](https://github.com/CPS-IT/glob) of `webmozart/glob` since the original doesn't allow 
+recent PHP versions. 
