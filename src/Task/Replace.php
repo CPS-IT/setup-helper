@@ -19,9 +19,11 @@ namespace CPSIT\SetupHelper\Task;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Composer\IO\IOInterface;
+use CPSIT\SetupHelper\File\GlobResolver;
+use CPSIT\SetupHelper\Processor\SearchReplaceFile;
 use CPSIT\SetupHelper\SettingsInterface;
-use Naucon\File\File;
-use Naucon\File\FileWriter;
+use CPSIT\SetupHelper\Task\Dto\FileSearch;
 
 /**
  * Class Replace
@@ -33,14 +35,27 @@ class Replace extends AbstractTask implements TaskInterface
         TaskInterface::KEY_SEARCH
     ];
 
+    protected $resolver;
+
+    /**
+     * AbstractTask constructor.
+     * @param IOInterface $IO
+     * @param $config
+     */
+    public function __construct(IOInterface $IO, array $config = [])
+    {
+        $this->resolver = new GlobResolver();
+        $this->io = $IO;
+        $this->config = $config;
+    }
+
+
     public function perform()
     {
         $config = $this->getConfig();
         if (empty($config)) {
-            $this->io->write(
-
-                get_class($this) . ': ' . TaskInterface::MESSAGE_EMPTY_CONFIGURATION
-            );
+            $message = get_class($this) . ': ' . TaskInterface::MESSAGE_EMPTY_CONFIGURATION;
+            $this->io->write($message);
         }
 
         foreach ($config as $singleConfig) {
@@ -49,7 +64,7 @@ class Replace extends AbstractTask implements TaskInterface
             }
 
             try {
-                $this->replace($singleConfig);
+                $this->process($singleConfig);
             } catch (\Exception $exception) {
                 $this->io->writeError($exception->getMessage());
             }
@@ -108,53 +123,40 @@ class Replace extends AbstractTask implements TaskInterface
      * @throws \Naucon\File\Exception\FileException
      * @throws \Naucon\File\Exception\FileWriterException
      */
-    protected function replace(array $configuration)
+    protected function process(array $configuration)
     {
-        $path = $configuration[TaskInterface::KEY_PATH];
-        $search = $configuration[TaskInterface::KEY_SEARCH];
-        $replace = '';
-        if (
-        !empty($configuration[TaskInterface::KEY_REPLACE])) {
-            $replace = $configuration[TaskInterface::KEY_REPLACE];
-        }
+        $pattern = $this->getWorkingDirectory() . $configuration[TaskInterface::KEY_PATH];
 
-        if (!empty($configuration[TaskInterface::KEY_ASK])) {
-            $replace = $this->io->ask($configuration[TaskInterface::KEY_ASK]);
-        }
+        $this->resolver->setPattern($pattern);
+        $resolvedFiles = $this->resolver->resolve();
 
-        $file = new File($this->getWorkingDirectory() . $path);
-        if (!$file->exists()) {
+        if (empty($resolvedFiles)) {
             $this->io->writeError(
                 sprintf(
                     TaskInterface::MESSAGE_FILE_NOT_FOUND,
-                    $path
+                    $pattern
                 )
             );
-
-            return;
         }
 
-        $fileWriter = new FileWriter($file, 'r+');
-        $content = $fileWriter->read();
-        $fileWriter->clear();
-        $count = 0;
-        $fileWriter->write(
-            str_replace(
-                $search,
-                $replace,
-                $content,
-                $count
-            )
-        );
+        $replace = "";
+        if (!empty($configuration[TaskInterface::KEY_ASK])) {
+            $replace = $this->io->ask($configuration[TaskInterface::KEY_ASK]);
+        }
+        if (!empty($configuration[TaskInterface::KEY_REPLACE])) {
+            $replace = $configuration[TaskInterface::KEY_REPLACE];
+        }
 
-        $this->io->write(
-            sprintf(
-                TaskInterface::MESSAGE_REPLACED_IN_FILE,
-                $search,
-                $fileWriter->getPathname(),
-                $count,
-                $replace
-            )
-        );
+        foreach ($resolvedFiles as $filepath) {
+            $fileSearch = new FileSearch();
+
+            $fileSearch->setPath($filepath)
+                ->setSearch($configuration[TaskInterface::KEY_SEARCH])
+                ->setReplace($replace);
+
+            $processor = new SearchReplaceFile($this->io, $fileSearch);
+            $processor->process();
+        }
+
     }
 }

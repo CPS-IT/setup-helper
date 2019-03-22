@@ -20,10 +20,14 @@ namespace CPSIT\SetupHelper\Tests\Unit\Task;
 
 use Composer\IO\IOInterface;
 use CPSIT\SetupHelper\Task\Symlink;
-use Naucon\File\File;
 use CPSIT\SetupHelper\Task\TaskInterface;
+use Naucon\File\File;
+use org\bovigo\vfs\vfsStream;
+use org\bovigo\vfs\vfsStreamDirectory;
+use org\bovigo\vfs\vfsStreamWrapper;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Class SymlinkTest
@@ -40,15 +44,30 @@ class SymlinkTest extends TestCase
      */
     protected $io;
 
+    /**
+     * @var vfsStreamDirectory
+     */
+    protected $virtualDirectory;
+
+    /**
+     * @var Filesystem|MockObject
+     */
+    protected $fileSystem;
 
     public function setUp()/* The :void return type declaration that should be here would cause a BC issue */
     {
         parent::setUp();
+        vfsStreamWrapper::register();
+        $this->virtualDirectory = vfsStream::setup('root');
+
         $this->io = $this->getMockBuilder(IOInterface::class)
             ->setMethods(['write', 'writeError'])
             ->getMockForAbstractClass();
+        $this->fileSystem = $this->getMockBuilder(Filesystem::class)
+            ->setMethods(['symlink', 'exists'])
+            ->getMock();
 
-        $this->subject = new Symlink($this->io);
+        $this->subject = new Symlink($this->io, [], $this->fileSystem);
     }
 
     public function testPerformWritesMessageForEmptyConfiguration()
@@ -65,25 +84,36 @@ class SymlinkTest extends TestCase
 
     public function testPerformWritesMessageForSuccess()
     {
-        $base_path="";
-        $source_path= $base_path . "tmp1/tmp11/tmp111";
-        mkdir($source_path,0777,true);
-        $target_path= $base_path . "tmp1/tmp12/tmp121";
-        mkdir($target_path,0777,true);
-        $filename = 'file.txt';
-        $fileHandle = fopen($source_path.File::PATH_SEPARATOR.$filename, 'ab');
-        fwrite($fileHandle, 'foo');
-        fclose($fileHandle);
-        $target_name='a_symlink_to_a_file';
+
+        $sourceFilePath = 'sourceFolder' . File::PATH_SEPARATOR . 'sourceFile.txt';
+        $linkPath = 'targetFolder' . File::PATH_SEPARATOR . 'symlinkToSourceFile';
+
+        $this->assertFileNotExists($linkPath);
+
         $config = [
-            $source_path.File::PATH_SEPARATOR.$filename => $target_path.File::PATH_SEPARATOR.$target_name
+            $sourceFilePath => $linkPath
         ];
-        $this->subject = new Symlink($this->io, $config);
+        $this->subject = $this->getMockBuilder(Symlink::class)
+            ->setConstructorArgs([$this->io, $config, $this->fileSystem])
+            ->setMethods(['getWorkingDirectory'])
+            ->getMock();
+
+        $this->fileSystem->expects($this->exactly(2))
+            ->method('exists')
+            ->withConsecutive(
+                [$sourceFilePath],
+                [$linkPath]
+            )
+            ->willReturnOnConsecutiveCalls(true, false);
+
+        $this->fileSystem->expects($this->once())
+            ->method('symlink')
+            ->willReturn(true);
 
         $expectedMessage = sprintf(
             TaskInterface::MESSAGE_SYMLINK_CREATED,
-            $source_path. File::PATH_SEPARATOR .$filename,
-            $target_path. File::PATH_SEPARATOR .$target_name
+            $sourceFilePath,
+            $linkPath
         );
         $this->io->expects($this->once())
             ->method('write')
@@ -94,25 +124,72 @@ class SymlinkTest extends TestCase
         $this->subject->perform();
     }
 
-    public function testPerformWritesErrorForFailure()
+    public function testPerformWritesErrorForMissingSourceFile()
     {
-        $target_path= ".";
-        $source_path="gdfgdfg";
-        $filename = 'unfound.txt';
+        $sourceFilePath = 'sourceFolder' . File::PATH_SEPARATOR . 'sourceFile.txt';
+        $linkPath = 'targetFolder' . File::PATH_SEPARATOR . 'symlinkToSourceFile';
 
-        $target_name='a_symlink_to_fail';
         $config = [
-            $source_path.File::PATH_SEPARATOR.$filename => $target_path.File::PATH_SEPARATOR.$target_name
+            $sourceFilePath => $linkPath
         ];
-        $this->subject = new Symlink($this->io, $config);
+
+
+        $this->subject = new Symlink($this->io, $config, $this->fileSystem);
+        $expectedAbsoluteSourceFilePath = $this->subject->getWorkingDirectory() . $sourceFilePath;
+
+        $this->fileSystem->expects($this->once())
+            ->method('exists')
+            ->with($sourceFilePath)
+            ->willReturn(false);
 
         $expectedMessage = sprintf(
             TaskInterface::MESSAGE_FILE_NOT_FOUND,
-            getcwd().File::PATH_SEPARATOR.$source_path.File::PATH_SEPARATOR.$filename
+            $expectedAbsoluteSourceFilePath
         );
-        $this->io->expects($this->atLeastOnce())
+        $this->io->expects($this->once())
             ->method('writeError')
             ->with($expectedMessage);
+        $this->fileSystem->expects($this->never())
+            ->method('symlink');
+        $this->io->expects($this->never())
+            ->method('write');
+
+        $this->subject->perform();
+    }
+
+    public function testPerformWritesErrorForExistingFile()
+    {
+        $sourceFilePath = 'sourceFolder' . File::PATH_SEPARATOR . 'sourceFile.txt';
+        $linkPath = 'targetFolder' . File::PATH_SEPARATOR . 'symlinkToSourceFile';
+
+        $config = [
+            $sourceFilePath => $linkPath
+        ];
+
+        $this->subject = new Symlink($this->io, $config, $this->fileSystem);
+
+        $this->fileSystem->expects($this->exactly(2))
+            ->method('exists')
+            ->withConsecutive(
+                [$sourceFilePath],
+                [$linkPath]
+            )
+            ->willReturnOnConsecutiveCalls(
+                true, true
+            );
+
+        $explanation =  ' as a file.';
+
+        $expectedMessage = sprintf(
+            TaskInterface::MESSAGE_SYMLINK_ALREADY_EXISTS,
+            $linkPath, $explanation
+        );
+
+        $this->io->expects($this->once())
+            ->method('writeError')
+            ->with($expectedMessage);
+        $this->fileSystem->expects($this->never())
+            ->method('symlink');
         $this->io->expects($this->never())
             ->method('write');
 
