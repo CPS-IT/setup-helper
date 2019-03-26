@@ -3,12 +3,6 @@
   "description": "Helps setting up a project bundle. This is a composer plugin. It performs predefined tasks on composer after update or install command.",
   "license": "GPL-2.0-or-later",
   "type": "composer-plugin",
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "https://github.com/CPS-IT/glob.git"
-    }
-  ],
   "authors": [
     {
       "name": "Dirk Wenzel",
@@ -24,7 +18,7 @@
     "composer-plugin-api": "^1.0.0",
     "naucon/file": "^1.0",
     "symfony/filesystem": "^2.7 || ^3.0 || ^4.0",
-    "webmozart/glob": "dev-master"
+    "cpsit/glob": "^5.0"
   },
   "require-dev": {
     "roave/security-advisories": "dev-master",
