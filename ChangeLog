@@ -1,3 +1,7 @@
+2019-03-26         [RELEASE] Release of setup-helper 1.1.0 (Dirk Wenzel)
+2019-03-26 37b739c [DOC] documentation adapted to cover fork of webmozart/glob (Dirk Wenzel)
+2019-03-26 b7f8943 [TASK] use cpsit/glob instead of webmozart/glob (Dirk Wenzel)
+
 2019-03-22         [RELEASE] Release of setup-helper 1.0.0 (Dirk Wenzel)
 2019-03-22 ce5b000 [TASK] documentation updated (Dirk Wenzel)
 2019-03-22 ce91399 [CI] debug output from composer reverted (Dirk Wenzel)
