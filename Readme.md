@@ -165,5 +165,5 @@ See documentation of [glob library](https://github.com/webmozart/glob) for detai
 
 ### Caveats
 
-Currently we rely on a [fork](https://github.com/CPS-IT/glob) of `webmozart/glob` since the original doesn't allow 
+Currently we rely on a the fork [cpsit/glob](https://github.com/CPS-IT/glob) of `webmozart/glob` since the original doesn't allow 
 recent PHP versions. 
