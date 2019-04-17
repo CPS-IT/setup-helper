@@ -11,8 +11,6 @@ matrix:
       env: COVERAGE=1
     - php: 7.3
       env: COMPOSER_PARAMS=--ignore-platform-reqs
-  allow_failures:
-    - php: 7.3
 
 env:
   global:
