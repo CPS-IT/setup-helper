@@ -79,13 +79,13 @@ class Replace extends AbstractTask implements TaskInterface
     protected function isConfigurationValid(array $configuration)
     {
 
-        $requiredKeys = static::$requiredKeys;
+        $keys = static::$requiredKeys;
 
         if (empty($configuration[TaskInterface::KEY_ASK])) {
-            $requiredKeys[] = TaskInterface::KEY_REPLACE;
+            $keys[] = TaskInterface::KEY_REPLACE;
         }
 
-        foreach ($requiredKeys as $key) {
+        foreach ($keys as $key) {
             if (empty($configuration[$key])) {
                 $this->io->writeError(
                     sprintf(
