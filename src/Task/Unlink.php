@@ -43,7 +43,7 @@ class Unlink extends AbstractTask implements TaskInterface
 
         foreach ($config as $filePath) {
             try {
-                $this->removeFile($filePath);
+                $this->process($filePath);
             } catch (\Exception $exception) {
                 $this->io->writeError($exception->getMessage());
             }
@@ -55,10 +55,11 @@ class Unlink extends AbstractTask implements TaskInterface
      * @return string
      * @throws \Exception
      */
-    protected function removeFile($filePath)
+    protected function process($filePath)
     {
-        $file = new File(getcwd() . $filePath);
-        if (!$file->exists()) {
+        $workingDirectory = $this->getWorkingDirectory();
+        $absoluteFilePath = $workingDirectory . $filePath;
+        if (!$this->fileSystem->exists($absoluteFilePath)) {
             $this->io->writeError(
                 sprintf(
                     TaskInterface::MESSAGE_FILE_NOT_FOUND,
@@ -69,7 +70,7 @@ class Unlink extends AbstractTask implements TaskInterface
             return;
         }
 
-        $file->delete();
+        $this->fileSystem->remove($absoluteFilePath);
         $this->io->write(sprintf(TaskInterface::MESSAGE_FILE_DELETED, $filePath));
     }
 }

@@ -178,7 +178,7 @@ class SymlinkTest extends TestCase
                 true, true
             );
 
-        $explanation =  ' as a file.';
+        $explanation = ' as a file.';
 
         $expectedMessage = sprintf(
             TaskInterface::MESSAGE_SYMLINK_ALREADY_EXISTS,

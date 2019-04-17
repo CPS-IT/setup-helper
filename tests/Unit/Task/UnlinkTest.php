@@ -23,6 +23,7 @@ use CPSIT\SetupHelper\Task\TaskInterface;
 use CPSIT\SetupHelper\Task\Unlink;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Filesystem\Filesystem;
 
 class UnlinkTest extends TestCase
 {
@@ -30,6 +31,11 @@ class UnlinkTest extends TestCase
      * @var Unlink
      */
     protected $subject;
+
+    /**
+     * @var Filesystem|MockObject
+     */
+    protected $fileSystem;
 
     /**
      * @var IOInterface|MockObject
@@ -42,8 +48,10 @@ class UnlinkTest extends TestCase
         $this->io = $this->getMockBuilder(IOInterface::class)
             ->setMethods(['write', 'writeError'])
             ->getMockForAbstractClass();
-
-        $this->subject = new Unlink($this->io);
+        $this->fileSystem = $this->getMockBuilder(Filesystem::class)
+            ->setMethods(['remove', 'exists'])
+            ->getMock();
+        $this->subject = new Unlink($this->io, [], $this->fileSystem);
     }
 
     public function testPerformWritesMessageForEmptyConfiguration()
@@ -68,6 +76,30 @@ class UnlinkTest extends TestCase
         $this->io->expects($this->once())
             ->method('writeError')
             ->with($expectedMessage);
+
+        $this->subject->perform();
+    }
+
+    public function testPerformRemovesExistingDirectory()
+    {
+        $parentDirectoryName = 'foo';
+        $directoryName = 'bar';
+        $pathToDirectory = $parentDirectoryName . DIRECTORY_SEPARATOR . $directoryName;
+
+        $configuration = [$pathToDirectory];
+        $this->subject = $this->getMockBuilder(Unlink::class)
+            ->setConstructorArgs([$this->io, $configuration, $this->fileSystem])
+            ->setMethods(['getWorkingDirectory'])
+            ->getMock();
+
+        $this->subject->expects($this->once())
+            ->method('getWorkingDirectory')
+            ->willReturn(DIRECTORY_SEPARATOR);
+
+        $this->fileSystem->expects($this->once())
+            ->method('exists')
+            ->with(DIRECTORY_SEPARATOR . $pathToDirectory)
+            ->willReturn(true);
 
         $this->subject->perform();
     }

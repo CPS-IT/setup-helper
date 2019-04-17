@@ -33,7 +33,7 @@ class Move extends AbstractTask implements TaskInterface
         }
         foreach ($config as $source => $target) {
             try {
-                $this->move($source, $target);
+                $this->process($source, $target);
             } catch (\Exception $exception) {
                 $this->io->writeError($exception->getMessage());
             }
@@ -46,7 +46,7 @@ class Move extends AbstractTask implements TaskInterface
      * @return string
      * @throws \Exception
      */
-    protected function move(string $source, string $target)
+    protected function process(string $source, string $target)
     {
         $sourceFile = new File($source);
 
