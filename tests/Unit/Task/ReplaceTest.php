@@ -26,6 +26,7 @@ use CPSIT\SetupHelper\Task\Replace;
 use CPSIT\SetupHelper\Task\TaskInterface;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamWrapper;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class ReplaceTest extends TestCase
