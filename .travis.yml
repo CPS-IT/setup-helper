@@ -10,8 +10,7 @@ matrix:
     - php: 7.2
       env: COVERAGE=1
     - php: 7.3
-  allow_failures:
-    - php: 7.3
+      env: COMPOSER_PARAMS=--ignore-platform-reqs
 
 env:
   global:
@@ -29,7 +28,7 @@ cache:
     - $HOME/.sonar/cache
 
 script:
-- composer install
+- composer install $COMPOSER_PARAMS
 - >
   if [[ "$COVERAGE" != "1" ]]; then
     echo;
