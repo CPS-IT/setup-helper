@@ -21,6 +21,10 @@ namespace CPSIT\SetupHelper\Tests\Unit\Task;
 use Composer\IO\IOInterface;
 use CPSIT\SetupHelper\Task\TaskInterface;
 use CPSIT\SetupHelper\Task\Unlink;
+use org\bovigo\vfs\vfsStream;
+use org\bovigo\vfs\vfsStreamDirectory;
+use org\bovigo\vfs\vfsStreamWrapper;
+use org\bovigo\vfs\visitor\vfsStreamStructureVisitor;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -70,5 +74,58 @@ class UnlinkTest extends TestCase
             ->with($expectedMessage);
 
         $this->subject->perform();
+    }
+
+    /**
+     * @throws \org\bovigo\vfs\vfsStreamException
+     */
+    public function testPerformRemovesDirectory()
+    {
+        vfsStreamWrapper::register();
+        $rootDirectoryName = 'root';
+        $parentDirectoryName = 'foo';
+        $directoryName = 'bar';
+        $pathToDirectory = $parentDirectoryName . DIRECTORY_SEPARATOR . $directoryName;
+        $initialStructure = [
+            $parentDirectoryName => [
+                $directoryName => [
+                    'file.txt'
+                ]
+            ]
+        ];
+
+        $expectedInitialStructure = [
+            $rootDirectoryName => $initialStructure
+        ];
+        $expectedResultingStructure = [
+            $rootDirectoryName => [
+                $parentDirectoryName => []
+            ]
+        ];
+        $root = vfsStream::setup('root', null, $initialStructure);
+
+        $this->assertEquals(
+            $expectedInitialStructure,
+            vfsStream::inspect(new vfsStreamStructureVisitor())->getStructure()
+        );
+
+        $configuration = [$pathToDirectory];
+        $this->subject = $this->getMockBuilder(Unlink::class)
+            ->setConstructorArgs([$this->io, $configuration])
+            ->setMethods(['getWorkingDirectory'])
+            ->getMock();
+
+        $this->subject->expects($this->once())
+            ->method('getWorkingDirectory')
+            ->willReturn($root->url() . DIRECTORY_SEPARATOR);
+
+        $this->subject->setConfig($configuration);
+        $this->subject->perform();
+
+        $resultingStructure = vfsStream::inspect(new vfsStreamStructureVisitor())->getStructure();
+        $this->assertEquals(
+            $expectedResultingStructure,
+            $resultingStructure
+        );
     }
 }
