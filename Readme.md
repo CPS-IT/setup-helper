@@ -16,6 +16,23 @@ composer require cpsit/setup-helper
 ### Configuration
 
 Add a key `setup-helper` to to the `extra` section of your `composer.json`.
+**Note**: Paths must be relative to your composer root directory or absolute.
+
+#### Copy files or folder
+```json
+{
+  "extra": {
+    "setup-helper": [
+      {
+        "copy": {
+          "path/to/file/or/folder": "path/to/target",
+          "other/file": "other/target"
+        }
+      }
+    ]
+  }
+}
+```
 
 #### Unlink files or folders
 ```json
@@ -33,7 +50,6 @@ Add a key `setup-helper` to to the `extra` section of your `composer.json`.
 }
 ```
 
-* paths must be relative to your composer root directory or absolute
 * there is **no confirmation request**. Any existing file or folder will be removed!
 
 

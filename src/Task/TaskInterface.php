@@ -38,6 +38,8 @@ interface TaskInterface
     const MESSAGE_REPLACED_IN_FILE = 'Searched pattern "%s" in file %s and replaced %b occurrences by "%s"';
     const MESSAGE_EMPTY_KEY = 'Required configuration key "%s" for task "%s" is not set or empty.';
     const MESSAGE_CONFLICTING_KEYS = 'Keys "%s" and "%s" can not be set both for task "%s.';
+    const MESSAGE_SOURCE_PATH_MUST_NOT_BE_EMPTY = 'Source path must not be empty';
+    const MESSAGE_TARGET_PATH_MUST_NOT_BE_EMPTY = 'Target path must not be empty';
     const KEY_PATH = 'path';
     const KEY_SEARCH = 'search';
     const KEY_REPLACE = 'replace';
