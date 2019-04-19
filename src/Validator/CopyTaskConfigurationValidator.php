@@ -34,12 +34,12 @@ class CopyTaskConfigurationValidator extends AbstractConfigurationValidator impl
     {
         $message = \get_class($this) . ': ';
 
+        $isValid = true;
         if (empty($configuration)) {
             $this->io->write(
                 $message . TaskInterface::MESSAGE_EMPTY_CONFIGURATION
             );
-
-            return false;
+            $isValid = false;
         }
 
         foreach ($configuration as $source => $target) {
@@ -48,19 +48,20 @@ class CopyTaskConfigurationValidator extends AbstractConfigurationValidator impl
                     $message . TaskInterface::MESSAGE_SOURCE_PATH_MUST_NOT_BE_EMPTY
                 );
 
-                return false;
+                $isValid = false;
+                break;
             }
             if (empty($target)) {
                 $this->io->write(
                     $message . TaskInterface::MESSAGE_TARGET_PATH_MUST_NOT_BE_EMPTY
                 );
 
-                return false;
+                $isValid = false;
+                break;
             }
         }
 
-        return true;
+        return $isValid;
     }
-
 
 }
