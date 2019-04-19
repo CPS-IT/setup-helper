@@ -3,9 +3,11 @@
 namespace CPSIT\SetupHelper\Task;
 
 use Composer\IO\IOInterface;
+use CPSIT\SetupHelper\Common\FileSystemTrait;
+use CPSIT\SetupHelper\Common\IOTrait;
+use CPSIT\SetupHelper\File\FileSystemInterface;
 use Naucon\File\File;
-use Symfony\Component\Filesystem\Filesystem;
-
+use CPSIT\SetupHelper\File\FileSystem;
 
 /***************************************************************
  *  Copyright notice
@@ -25,10 +27,7 @@ use Symfony\Component\Filesystem\Filesystem;
  ***************************************************************/
 class AbstractTask
 {
-    /**
-     * @var IOInterface
-     */
-    protected $io;
+    use IOTrait, FileSystemTrait;
 
     /**
      * @var array
@@ -36,32 +35,19 @@ class AbstractTask
     protected $config;
 
     /**
-     * @var Filesystem
-     */
-    protected $fileSystem;
-
-    /**
      * AbstractTask constructor.
      * @param IOInterface $IO
      * @param array $config
-     * @param Filesystem $fileSystem
+     * @param FilesystemInterface $fileSystem
      */
-    public function __construct(IOInterface $IO, array $config = [], Filesystem $fileSystem = null)
+    public function __construct(IOInterface $IO, array $config = [], FileSystemInterface $fileSystem = null)
     {
         $this->io = $IO;
         $this->config = $config;
         if (null === $fileSystem) {
-            $fileSystem =  new Filesystem();
+            $fileSystem =  new FileSystem();
         }
         $this->fileSystem = $fileSystem;
-    }
-
-    /**
-     * @return IOInterface
-     */
-    public function getIo(): IOInterface
-    {
-        return $this->io;
     }
 
     /**
@@ -94,13 +80,4 @@ class AbstractTask
         return getcwd() . File::PATH_SEPARATOR;
     }
 
-    /**
-     * Get the file system
-     *
-     * @return Filesystem
-     */
-    public function getFileSystem(): Filesystem
-    {
-        return $this->fileSystem;
-    }
 }
