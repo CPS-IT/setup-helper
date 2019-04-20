@@ -44,7 +44,10 @@ class Copy extends AbstractTask implements TaskInterface
         $this->configurationValidator = $configurationValidator;
     }
 
-    public function perform()
+    /**
+     * @return void
+     */
+    public function perform(): void
     {
         if (!$this->configurationValidator->validate($this->getConfig())) {
             return;
@@ -64,9 +67,10 @@ class Copy extends AbstractTask implements TaskInterface
         return $this->configurationValidator;
     }
 
-    protected function process(array $configuration) {
+    protected function process(array $configuration)
+    {
         foreach ($configuration as $source => $target) {
-
+            $this->fileSystem->copy($source, $target);
         }
     }
 

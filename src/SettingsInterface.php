@@ -23,6 +23,7 @@ interface SettingsInterface
     const INSTALLER_EXTRA_KEY = 'setup-helper';
     const UNLINK_TASK_KEY = 'unlink';
     const MOVE_TASK_KEY = 'move';
+    const COPY_TASK_KEY = 'copy';
     const RENAME_TASK_KEY = 'rename';
     const REPLACE_TASK_KEY = 'replace';
     const MAKE_DIRECTORY_TASK_KEY = 'makeDirectory';

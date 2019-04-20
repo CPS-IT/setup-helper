@@ -39,11 +39,20 @@ class FileSystemTest extends TestCase
         $this->subject = new FileSystem();
     }
 
-    public function testSubjectImplementsFileSystemInterface()
+    public function testSubjectImplementsFileSystemInterface(): void
     {
         $this->assertInstanceOf(
             FileSystemInterface::class,
             $this->subject
+        );
+    }
+
+    public function testConstructorSetsSymfonyFileSystem(): void
+    {
+        /** @noinspection UnnecessaryAssertionInspection */
+        $this->assertInstanceOf(
+            \Symfony\Component\Filesystem\Filesystem::class,
+        $this->subject->getSymfonyFileSystem()
         );
     }
 }

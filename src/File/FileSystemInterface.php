@@ -36,12 +36,9 @@ interface FileSystemInterface
      *
      * @param string $originFile The original filename
      * @param string $targetFile The target filename
-     * @param bool $overwriteNewerFiles If true, target files newer than origin files are overwritten
-     *
-     * @throws FileNotFoundException When originFile doesn't exist
-     * @throws IOException           When copy fails
+     * @return bool
      */
-    public function copy($originFile, $targetFile, $overwriteNewerFiles = false);
+    public function copy($originFile, $targetFile): bool ;
 
     /**
      * Creates a directory recursively.
@@ -51,7 +48,7 @@ interface FileSystemInterface
      *
      * @throws IOException On any directory creation failure
      */
-    public function mkdir($dirs, $mode = 0777);
+    public function makeDirectories($dirs, $mode = 0777);
 
     /**
      * Checks the existence of files or directories.
@@ -60,18 +57,17 @@ interface FileSystemInterface
      *
      * @return bool true if the file exists, false otherwise
      */
-    public function exists($files);
+    public function exists($files): bool;
 
     /**
      * Sets access and modification time of file.
      *
      * @param string|iterable $files A filename, an array of files, or a \Traversable instance to create
      * @param int|null $time The touch time as a Unix timestamp, if not supplied the current system time is used
-     * @param int|null $atime The access time as a Unix timestamp, if not supplied the current system time is used
-     *
-     * @throws IOException When touch fails
+     * @param null $accessTime The access time as a Unix timestamp, if not supplied the current system time is used
+     * @return void
      */
-    public function touch($files, $time = null, $atime = null);
+    public function touch($files, $time = null, $accessTime = null): void;
 
     /**
      * Removes files or directories.
@@ -92,7 +88,7 @@ interface FileSystemInterface
      *
      * @throws IOException When the change fails
      */
-    public function chmod($files, $mode, $umask = 0000, $recursive = false);
+    public function changeMode($files, $mode, $umask = 0000, $recursive = false);
 
     /**
      * Change the owner of an array of files or directories.
@@ -103,7 +99,7 @@ interface FileSystemInterface
      *
      * @throws IOException When the change fails
      */
-    public function chown($files, $user, $recursive = false);
+    public function changeOwner($files, $user, $recursive = false);
 
     /**
      * Change the group of an array of files or directories.
@@ -114,19 +110,16 @@ interface FileSystemInterface
      *
      * @throws IOException When the change fails
      */
-    public function chgrp($files, $group, $recursive = false);
+    public function changeGroup($files, $group, $recursive = false);
 
     /**
      * Renames a file or a directory.
      *
      * @param string $origin The origin filename or directory
      * @param string $target The new filename or directory
-     * @param bool $overwrite Whether to overwrite the target if it already exists
-     *
-     * @throws IOException When target file or directory already exists
-     * @throws IOException When origin cannot be renamed
+     * @return
      */
-    public function rename($origin, $target, $overwrite = false);
+    public function rename($origin, $target);
 
     /**
      * Creates a symbolic link or copy a directory.
@@ -153,20 +146,20 @@ interface FileSystemInterface
     /**
      * Resolves links in paths.
      *
-     * With $canonicalize = false (default)
+     * With $canonical = false (default)
      *      - if $path does not exist or is not a link, returns null
      *      - if $path is a link, returns the next direct target of the link without considering the existence of the target
      *
-     * With $canonicalize = true
+     * With $canonical = true
      *      - if $path does not exist, returns null
      *      - if $path exists, returns its absolute fully resolved final version
      *
      * @param string $path A filesystem path
-     * @param bool $canonicalize Whether or not to return a canonicalized path
+     * @param bool $canonical Whether or not to return a canonical path
      *
      * @return string|null
      */
-    public function readlink($path, $canonicalize = false);
+    public function readlink($path, $canonical = false): ?string;
 
     /**
      * Returns whether the file path is an absolute path.

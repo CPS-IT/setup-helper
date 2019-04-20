@@ -60,7 +60,7 @@ class CopyTest extends TestCase
             ->setMethods(['write', 'writeError'])
             ->getMockForAbstractClass();
         $this->fileSystem = $this->getMockBuilder(FileSystemInterface::class)
-            ->setMethods(['exists'])
+            ->setMethods(['copy', 'exists'])
             ->getMockForAbstractClass();
         $this->configurationValidator = $this->getMockBuilder(ConfigurationValidatorInterface::class)
             ->setMethods(['validate'])
@@ -69,7 +69,7 @@ class CopyTest extends TestCase
         $this->subject = new Copy($this->io, [], $this->fileSystem, $this->configurationValidator);
     }
 
-    public function testCopyImplementsTaskInterface()
+    public function testCopyImplementsTaskInterface(): void
     {
         $this->assertInstanceOf(
             TaskInterface::class,
@@ -77,7 +77,7 @@ class CopyTest extends TestCase
         );
     }
 
-    public function testGetConfigurationValidatorReturnsInstanceOfConfigurationValidatorInterface()
+    public function testGetConfigurationValidatorReturnsInstanceOfConfigurationValidatorInterface(): void
     {
         $this->assertInstanceOf(
             ConfigurationValidatorInterface::class,
@@ -85,7 +85,7 @@ class CopyTest extends TestCase
         );
     }
 
-    public function testConstructorSetsConfigurationValidator()
+    public function testConstructorSetsConfigurationValidator(): void
     {
         $this->subject->__construct($this->io, [], $this->fileSystem, $this->configurationValidator);
 
@@ -95,7 +95,7 @@ class CopyTest extends TestCase
         );
     }
 
-    public function testPerformValidatesConfiguration()
+    public function testPerformValidatesConfiguration(): void
     {
         $configuration = ['foo'];
 
@@ -108,7 +108,7 @@ class CopyTest extends TestCase
         $this->subject->perform();
     }
 
-    public function testPerformWritesErrorForException()
+    public function testPerformWritesErrorForException(): void
     {
         $message = 'bar';
         $mockException = new \Exception($message);
@@ -129,4 +129,22 @@ class CopyTest extends TestCase
 
         $this->subject->perform();
     }
+
+    public function testPerformCopies(): void
+    {
+        $source = 'path/to/file';
+        $target = 'path/to/target';
+        $configuration = [
+            $source => $target
+        ];
+        $this->subject->setConfig($configuration);
+
+        $this->configurationValidator->method('validate')
+            ->willReturn(true);
+        $this->fileSystem->expects($this->once())
+            ->method('copy')
+            ->with($source, $target);
+        $this->subject->perform();
+    }
+
 }

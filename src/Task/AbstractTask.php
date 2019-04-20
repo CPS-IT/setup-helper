@@ -44,10 +44,7 @@ class AbstractTask
     {
         $this->io = $IO;
         $this->config = $config;
-        if (null === $fileSystem) {
-            $fileSystem =  new FileSystem();
-        }
-        $this->fileSystem = $fileSystem;
+        $this->fileSystem = $fileSystem ? : new FileSystem();
     }
 
     /**

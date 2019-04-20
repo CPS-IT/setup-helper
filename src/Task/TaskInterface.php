@@ -57,5 +57,5 @@ interface TaskInterface
     /**
      * @return void
      */
-    public function perform();
+    public function perform(): void ;
 }

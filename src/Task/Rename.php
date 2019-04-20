@@ -26,10 +26,7 @@ use Naucon\File\File;
  */
 class Rename extends AbstractTask implements TaskInterface
 {
-    /**
-     *
-     */
-    public function perform()
+    public function perform(): void
     {
         $config = $this->getConfig();
         if (empty($config)) {
