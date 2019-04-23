@@ -20,6 +20,7 @@ namespace CPSIT\SetupHelper\Task;
  ***************************************************************/
 
 use Composer\IO\IOInterface;
+use CPSIT\SetupHelper\File\FileSystemInterface;
 use CPSIT\SetupHelper\File\GlobResolver;
 use CPSIT\SetupHelper\Processor\SearchReplaceFile;
 use CPSIT\SetupHelper\SettingsInterface;
@@ -42,15 +43,16 @@ class Replace extends AbstractTask implements TaskInterface
      * @param IOInterface $IO
      * @param $config
      */
-    public function __construct(IOInterface $IO, array $config = [])
+    public function __construct(IOInterface $IO, array $config = [], FileSystemInterface $fileSystem = null)
     {
+        parent::__construct($IO, $config, $fileSystem);
         $this->resolver = new GlobResolver();
         $this->io = $IO;
         $this->config = $config;
     }
 
 
-    public function perform()
+    public function perform(): void
     {
         $config = $this->getConfig();
         if (empty($config)) {
@@ -123,7 +125,7 @@ class Replace extends AbstractTask implements TaskInterface
      * @throws \Naucon\File\Exception\FileException
      * @throws \Naucon\File\Exception\FileWriterException
      */
-    protected function process(array $configuration)
+    protected function process(array $configuration): void
     {
         $pattern = $this->getWorkingDirectory() . $configuration[TaskInterface::KEY_PATH];
 

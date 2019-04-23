@@ -1,12 +1,11 @@
 <?php
 
-namespace CPSIT\SetupHelper\Task;
+namespace CPSIT\SetupHelper\Validator;
 
 use Composer\IO\IOInterface;
 use CPSIT\SetupHelper\Common\FileSystemTrait;
 use CPSIT\SetupHelper\Common\IOTrait;
 use CPSIT\SetupHelper\File\FileSystemInterface;
-use Naucon\File\File;
 use CPSIT\SetupHelper\File\FileSystem;
 
 /***************************************************************
@@ -25,56 +24,25 @@ use CPSIT\SetupHelper\File\FileSystem;
  * GNU General Public License for more details.
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-class AbstractTask
+
+/**
+ * Class AbstractConfigurationValidator
+ */
+abstract class AbstractConfigurationValidator
 {
     use IOTrait, FileSystemTrait;
 
     /**
-     * @var array
-     */
-    protected $config;
-
-    /**
-     * AbstractTask constructor.
+     * AbstractConfigurationValidator constructor.
      * @param IOInterface $IO
-     * @param array $config
-     * @param FilesystemInterface $fileSystem
+     * @param FileSystemInterface $fileSystem
      */
-    public function __construct(IOInterface $IO, array $config = [], FileSystemInterface $fileSystem = null)
+    public function __construct(IOInterface $IO, FileSystemInterface $fileSystem = null)
     {
         $this->io = $IO;
-        $this->config = $config;
-        $this->fileSystem = $fileSystem ? : new FileSystem();
+        if (null === $fileSystem) {
+            $fileSystem =  new FileSystem();
+        }
+        $this->fileSystem = $fileSystem;
     }
-
-    /**
-     * Get the config
-     *
-     * @return array
-     */
-    public function getConfig(): array
-    {
-        return $this->config;
-    }
-
-    /**
-     * Set the config
-     *
-     * @param array $config
-     */
-    public function setConfig(array $config)
-    {
-        $this->config = $config;
-    }
-
-    /**
-     * Get the working directory of the current script
-     * (This should always be the composer root path)
-     * @return string
-     */
-    public function getWorkingDirectory(): string
-    {
-        return getcwd() . File::PATH_SEPARATOR;
-    }
-
 }

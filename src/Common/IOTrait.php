@@ -1,11 +1,10 @@
 <?php
-
-namespace CPSIT\SetupHelper;
+namespace CPSIT\SetupHelper\Common;
 
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2019 Dirk Wenzel <wenzel@cps-it.de>
+ *  (c) 2019 Dirk Wenzel
  *  All rights reserved
  *
  * The GNU General Public License can be found at
@@ -18,14 +17,32 @@ namespace CPSIT\SetupHelper;
  * GNU General Public License for more details.
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-interface SettingsInterface
+
+use Composer\IO\IOInterface;
+
+/**
+ * Trait IOTrait
+ */
+trait IOTrait
 {
-    const INSTALLER_EXTRA_KEY = 'setup-helper';
-    const UNLINK_TASK_KEY = 'unlink';
-    const MOVE_TASK_KEY = 'move';
-    const COPY_TASK_KEY = 'copy';
-    const RENAME_TASK_KEY = 'rename';
-    const REPLACE_TASK_KEY = 'replace';
-    const MAKE_DIRECTORY_TASK_KEY = 'makeDirectory';
-    const SYMLINK_TASK_KEY = 'symlink';
+    /**
+     * @var IOInterface
+     */
+    protected $io;
+
+    /**
+     * @return IOInterface
+     */
+    public function getIo(): ?IOInterface
+    {
+        return $this->io;
+    }
+
+    /**
+     * @param IOInterface $io
+     */
+    public function setIo(IOInterface $io)
+    {
+        $this->io = $io;
+    }
 }

@@ -23,7 +23,7 @@ use Naucon\File\File;
 
 class Move extends AbstractTask implements TaskInterface
 {
-    public function perform()
+    public function perform(): void
     {
         $config = $this->getConfig();
         if (empty($config)) {
@@ -43,10 +43,9 @@ class Move extends AbstractTask implements TaskInterface
     /**
      * @param string $source
      * @param string $target
-     * @return string
      * @throws \Exception
      */
-    protected function process(string $source, string $target)
+    protected function process(string $source, string $target): void
     {
         $sourceFile = new File($source);
 

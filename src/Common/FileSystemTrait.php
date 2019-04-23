@@ -1,11 +1,14 @@
 <?php
 
-namespace CPSIT\SetupHelper;
+namespace CPSIT\SetupHelper\Common;
+
+use CPSIT\SetupHelper\File\FileSystem;
+use CPSIT\SetupHelper\File\FileSystemInterface;
 
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2019 Dirk Wenzel <wenzel@cps-it.de>
+ *  (c) 2019 Dirk Wenzel
  *  All rights reserved
  *
  * The GNU General Public License can be found at
@@ -18,14 +21,29 @@ namespace CPSIT\SetupHelper;
  * GNU General Public License for more details.
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-interface SettingsInterface
+
+/**
+ * Trait FileSystemTrait
+ */
+trait FileSystemTrait
 {
-    const INSTALLER_EXTRA_KEY = 'setup-helper';
-    const UNLINK_TASK_KEY = 'unlink';
-    const MOVE_TASK_KEY = 'move';
-    const COPY_TASK_KEY = 'copy';
-    const RENAME_TASK_KEY = 'rename';
-    const REPLACE_TASK_KEY = 'replace';
-    const MAKE_DIRECTORY_TASK_KEY = 'makeDirectory';
-    const SYMLINK_TASK_KEY = 'symlink';
+    /**
+     * @var FileSystemInterface
+     */
+    protected $fileSystem;
+
+    /**
+     * Get the file system
+     *
+     * @return FileSystemInterface
+     */
+    public function getFileSystem(): FileSystemInterface
+    {
+        if (!$this->fileSystem instanceof FileSystemInterface)
+        {
+            $this->fileSystem = new FileSystem();
+        }
+
+        return $this->fileSystem;
+    }
 }
