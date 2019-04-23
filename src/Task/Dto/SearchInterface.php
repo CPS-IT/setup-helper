@@ -24,4 +24,23 @@ namespace CPSIT\SetupHelper\Task\Dto;
 interface SearchInterface
 {
 
+    /**
+     * Get the search pattern
+     * @return string
+     */
+    public function getSearch(): string;
+
+    /**
+     * Get the replace string
+     *
+     * @return string
+     */
+    public function getReplace(): string;
+
+    /**
+     * Get the path pattern
+     *
+     * @return string
+     */
+    public function getPath(): string;
 }

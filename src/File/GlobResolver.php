@@ -23,7 +23,10 @@ use CPSIT\Glob\Glob;
 
 Class GlobResolver implements ResolverInterface
 {
-    protected $pattern;
+    /**
+     * @var string
+     */
+    protected $pattern = '';
 
     /**
      * Gets the pattern to be resolved
@@ -36,24 +39,29 @@ Class GlobResolver implements ResolverInterface
 
     /**
      * Sets the pattern to be resolved
-     * @param string
+     * @param string $pattern
      */
-    public function setPattern(string $pattern)
+    public function setPattern(string $pattern): void
     {
         $this->pattern = $pattern;
     }
 
     /**
      * Resolves path pattern to
-     * return list of file paths
-     * @return array
+     *
+     * @return array An array of file paths
      */
-    public function resolve()
+    public function resolve(): array
     {
         return $this->globRecursive($this->pattern);
     }
 
-    protected function globRecursive($pattern, $flags = 0)
+    /**
+     * @param string $pattern
+     * @param int $flags
+     * @return array
+     */
+    protected function globRecursive(string $pattern, int $flags = 0): array
     {
         $files = Glob::glob($pattern, $flags);
         foreach (Glob::glob(dirname($pattern) . '/*', GLOB_ONLYDIR | GLOB_NOSORT) as $dir) {

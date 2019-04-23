@@ -50,7 +50,7 @@ class Rename extends AbstractTask implements TaskInterface
      * @param string $newName
      * @throws \Naucon\File\Exception\FileException
      */
-    protected function process(string $oldName, string $newName)
+    protected function process(string $oldName, string $newName): void
     {
         $file = new  File($this->getWorkingDirectory() . $oldName);
         if (!$file->exists()) {

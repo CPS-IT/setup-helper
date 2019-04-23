@@ -88,8 +88,8 @@ class FileSystem extends \Composer\Util\Filesystem implements FileSystemInterfac
 
     /**
      * @param iterable|string $files A filename, an array of files, or a \Traversable instance to create
-     * @param null $time The touch time as a Unix timestamp, if not supplied the current system time is used
-     * @param null $accessTime The access time as a Unix timestamp, if not supplied the current system time is used
+     * @param int|null $time The touch time as a Unix timestamp, if not supplied the current system time is used
+     * @param int|null $accessTime The access time as a Unix timestamp, if not supplied the current system time is used
      * @throws IOException
      */
     public function touch($files, $time = null, $accessTime = null): void

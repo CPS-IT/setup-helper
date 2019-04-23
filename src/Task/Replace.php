@@ -31,11 +31,17 @@ use CPSIT\SetupHelper\Task\Dto\FileSearch;
  */
 class Replace extends AbstractTask implements TaskInterface
 {
+    /**
+     * @var array
+     */
     static protected $requiredKeys = [
         TaskInterface::KEY_PATH,
         TaskInterface::KEY_SEARCH
     ];
 
+    /**
+     * @var GlobResolver
+     */
     protected $resolver;
 
     /**

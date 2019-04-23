@@ -21,6 +21,9 @@ namespace CPSIT\SetupHelper\Report;
 
 class Warning extends Result
 {
+    /**
+     * @var string
+     */
     protected /** @noinspection ClassOverridesFieldOfSuperClassInspection */
         $status = ResultInterface::STATUS_WARNING;
 }

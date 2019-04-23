@@ -68,7 +68,7 @@ final class Installer implements PluginInterface, EventSubscriberInterface
     /**
      * @param Event $composerEvent
      */
-    public static function performTasks(Event $composerEvent)
+    public static function performTasks(Event $composerEvent): void
     {
         $composer = $composerEvent->getComposer();
         $extra = $composer->getPackage()->getExtra();
@@ -119,7 +119,7 @@ final class Installer implements PluginInterface, EventSubscriberInterface
     /**
      * {@inheritDoc}
      */
-    public function activate(Composer $composer, IOInterface $io)
+    public function activate(Composer $composer, IOInterface $io): void
     {
         // Nothing to do here, as all features are provided through event listeners
     }

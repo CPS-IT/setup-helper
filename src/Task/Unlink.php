@@ -51,10 +51,10 @@ class Unlink extends AbstractTask implements TaskInterface
     }
 
     /**
-     * @param $filePath
+     * @param string $filePath
      * @throws \Exception
      */
-    protected function process($filePath): void
+    protected function process(string $filePath): void
     {
         $workingDirectory = $this->getWorkingDirectory();
         $absoluteFilePath = $workingDirectory . $filePath;
