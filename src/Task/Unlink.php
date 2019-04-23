@@ -32,7 +32,7 @@ class Unlink extends AbstractTask implements TaskInterface
     /**
      * @return void
      */
-    public function perform()
+    public function perform(): void
     {
         $config = $this->getConfig();
         if (empty($config)) {
@@ -52,10 +52,9 @@ class Unlink extends AbstractTask implements TaskInterface
 
     /**
      * @param $filePath
-     * @return string
      * @throws \Exception
      */
-    protected function process($filePath)
+    protected function process($filePath): void
     {
         $workingDirectory = $this->getWorkingDirectory();
         $absoluteFilePath = $workingDirectory . $filePath;

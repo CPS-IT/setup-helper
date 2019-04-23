@@ -23,7 +23,7 @@ use CPSIT\SetupHelper\Task\TaskInterface;
 use CPSIT\SetupHelper\Task\Unlink;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Filesystem\Filesystem;
+use CPSIT\SetupHelper\File\FileSystemInterface;
 
 class UnlinkTest extends TestCase
 {
@@ -48,9 +48,9 @@ class UnlinkTest extends TestCase
         $this->io = $this->getMockBuilder(IOInterface::class)
             ->setMethods(['write', 'writeError'])
             ->getMockForAbstractClass();
-        $this->fileSystem = $this->getMockBuilder(Filesystem::class)
+        $this->fileSystem = $this->getMockBuilder(FileSystemInterface::class)
             ->setMethods(['remove', 'exists'])
-            ->getMock();
+            ->getMockForAbstractClass();
         $this->subject = new Unlink($this->io, [], $this->fileSystem);
     }
 

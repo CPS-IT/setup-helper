@@ -19,6 +19,7 @@
 namespace CPSIT\SetupHelper\Tests\Unit\Task;
 
 use Composer\IO\IOInterface;
+use CPSIT\SetupHelper\File\FileSystemInterface;
 use CPSIT\SetupHelper\Task\Symlink;
 use CPSIT\SetupHelper\Task\TaskInterface;
 use Naucon\File\File;
@@ -27,7 +28,6 @@ use org\bovigo\vfs\vfsStreamDirectory;
 use org\bovigo\vfs\vfsStreamWrapper;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Class SymlinkTest
@@ -50,7 +50,7 @@ class SymlinkTest extends TestCase
     protected $virtualDirectory;
 
     /**
-     * @var Filesystem|MockObject
+     * @var FileSystemInterface|MockObject
      */
     protected $fileSystem;
 
@@ -63,9 +63,9 @@ class SymlinkTest extends TestCase
         $this->io = $this->getMockBuilder(IOInterface::class)
             ->setMethods(['write', 'writeError'])
             ->getMockForAbstractClass();
-        $this->fileSystem = $this->getMockBuilder(Filesystem::class)
+        $this->fileSystem = $this->getMockBuilder(FileSystemInterface::class)
             ->setMethods(['symlink', 'exists'])
-            ->getMock();
+            ->getMockForAbstractClass();
 
         $this->subject = new Symlink($this->io, [], $this->fileSystem);
     }

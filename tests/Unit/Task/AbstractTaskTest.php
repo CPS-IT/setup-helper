@@ -19,6 +19,7 @@
 namespace CPSIT\SetupHelper\Tests\Unit\Task;
 
 use Composer\IO\IOInterface;
+use CPSIT\SetupHelper\File\FileSystemInterface;
 use CPSIT\SetupHelper\Task\AbstractTask;
 use Naucon\File\File;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -68,15 +69,15 @@ class AbstractTaskTest extends TestCase
         );
     }
 
-    public function testConstructorSetsFileSystem()
+    public function testConstructorSetsFileSystem(): void
     {
         $this->assertInstanceOf(
-            Filesystem::class,
+            FileSystemInterface::class,
             $this->subject->getFileSystem()
         );
     }
 
-    public function testDefaultConfigIsEmptyArray()
+    public function testDefaultConfigIsEmptyArray(): void
     {
         // constructor argument config empty
         $constructorArguments = [$this->io];

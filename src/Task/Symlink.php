@@ -25,9 +25,9 @@ namespace CPSIT\SetupHelper\Task;
 class Symlink extends AbstractTask implements TaskInterface
 {
     /**
-     * performs the task and returns status messages
+     * performs the task
      */
-    public function perform()
+    public function perform(): void
     {
         $config = $this->getConfig();
         if (empty($config)) {
@@ -54,7 +54,7 @@ class Symlink extends AbstractTask implements TaskInterface
      * @return void
      * @throws \Exception
      */
-    protected function process(string $target, string $link)
+    protected function process(string $target, string $link): void
     {
         if (!$this->fileSystem->exists($target)) {
             $message = sprintf(
