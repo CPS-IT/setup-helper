@@ -159,7 +159,7 @@ interface FileSystemInterface
      *
      * @return string|null
      */
-    public function readlink($path, $canonical = false): ?string;
+    public function readLink($path, $canonical = false): ?string;
 
     /**
      * Returns whether the file path is an absolute path.

@@ -56,6 +56,7 @@ class FileSystem extends \Composer\Util\Filesystem implements FileSystemInterfac
      * If the target file is older than the origin file, it's always overwritten.
      * If the target file is newer, it is overwritten only when the
      * $overwriteNewerFiles option is set to true.
+     * Wrapper for parent method which does not declare return type.
      *
      * @param string $originFile The original filename
      * @param string $targetFile The target filename
@@ -183,7 +184,7 @@ class FileSystem extends \Composer\Util\Filesystem implements FileSystemInterfac
      *
      * @return string|null
      */
-    public function readlink($path, $canonical = false): ?string
+    public function readLink($path, $canonical = false): ?string
     {
         return $this->symfonyFileSystem->readlink($path, $canonical);
     }
