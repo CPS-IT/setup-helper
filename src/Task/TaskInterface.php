@@ -40,6 +40,7 @@ interface TaskInterface
     const MESSAGE_CONFLICTING_KEYS = 'Keys "%s" and "%s" can not be set both for task "%s.';
     const MESSAGE_SOURCE_PATH_MUST_NOT_BE_EMPTY = 'Source path must not be empty';
     const MESSAGE_TARGET_PATH_MUST_NOT_BE_EMPTY = 'Target path must not be empty';
+    const MESSAGE_FILE_COPIED = 'File or folder %s copied to %s';
     const KEY_PATH = 'path';
     const KEY_SEARCH = 'search';
     const KEY_REPLACE = 'replace';

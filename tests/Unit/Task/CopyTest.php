@@ -147,4 +147,28 @@ class CopyTest extends TestCase
         $this->subject->perform();
     }
 
+    public function testPerformWritesMessageOnSuccess()
+    {
+        $sourceFolderName = 'foo';
+        $targetFolderName = 'bar';
+        $config = [
+            $sourceFolderName => $targetFolderName
+        ];
+        $this->subject->setConfig($config);
+        $expectedMessage = sprintf(
+            TaskInterface::MESSAGE_FILE_COPIED,
+            $sourceFolderName,
+            $targetFolderName
+        );
+
+        $this->configurationValidator->method('validate')
+            ->willReturn(true);
+        $this->fileSystem->method('copy')
+            ->willReturn(true);
+
+        $this->io->expects($this->once())
+            ->method('write')
+            ->with($expectedMessage);
+        $this->subject->perform();
+    }
 }

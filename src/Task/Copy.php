@@ -70,7 +70,15 @@ class Copy extends AbstractTask implements TaskInterface
     protected function process(array $configuration)
     {
         foreach ($configuration as $source => $target) {
-            $this->fileSystem->copy($source, $target);
+            if ($this->fileSystem->copy($source, $target)) {
+                $this->io->write(
+                    sprintf(
+                        TaskInterface::MESSAGE_FILE_COPIED,
+                        $source,
+                        $target
+                    )
+                );
+            }
         }
     }
 
