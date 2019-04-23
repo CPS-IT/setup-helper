@@ -41,7 +41,8 @@ class Replace extends AbstractTask implements TaskInterface
     /**
      * AbstractTask constructor.
      * @param IOInterface $IO
-     * @param $config
+     * @param array $config
+     * @param FileSystemInterface|null $fileSystem
      */
     public function __construct(IOInterface $IO, array $config = [], FileSystemInterface $fileSystem = null)
     {

@@ -32,7 +32,7 @@ use PHPUnit\Framework\TestCase;
 class ReplaceTest extends TestCase
 {
     /**
-     * @var Replace
+     * @var Replace|MockObject
      */
     protected $subject;
 
@@ -264,6 +264,32 @@ class ReplaceTest extends TestCase
             $mockFile->getContent()
         );
 
+    }
+
+    public function testPerformWritesErrorForException(): void
+    {
+        $message = 'bar';
+        $mockException = new \Exception($message);
+
+        $config = [
+            ['foo']
+        ];
+        $this->subject = $this->getMockBuilder(Replace::class)
+            ->setMethods(['isConfigurationValid', 'process'])
+            ->setConstructorArgs(
+                [$this->io, $config])
+            ->getMock();
+
+        $this->subject->method('isConfigurationValid')
+            ->willReturn(true);
+        $this->subject->method('process')
+            ->willThrowException($mockException);
+
+        $this->io->expects($this->once())
+            ->method('writeError')
+            ->with($message);
+
+        $this->subject->perform();
     }
 
 }

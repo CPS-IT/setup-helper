@@ -19,11 +19,11 @@
 namespace CPSIT\SetupHelper\Tests\Unit\Task;
 
 use Composer\IO\IOInterface;
+use CPSIT\SetupHelper\File\FileSystemInterface;
 use CPSIT\SetupHelper\Task\TaskInterface;
 use CPSIT\SetupHelper\Task\Unlink;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use CPSIT\SetupHelper\File\FileSystemInterface;
 
 class UnlinkTest extends TestCase
 {
@@ -103,4 +103,30 @@ class UnlinkTest extends TestCase
 
         $this->subject->perform();
     }
+
+    public function testPerformWritesErrorForException(): void
+    {
+        $message = 'bar';
+        $mockException = new \Exception($message);
+        $path = 'bar/foo.txt';
+
+        $config = [
+            $path
+        ];
+        $this->subject = $this->getMockBuilder(Unlink::class)
+            ->setMethods(['process'])
+            ->setConstructorArgs(
+                [$this->io, $config])
+            ->getMock();
+
+        $this->subject->method('process')
+            ->willThrowException($mockException);
+
+        $this->io->expects($this->once())
+            ->method('writeError')
+            ->with($message);
+
+        $this->subject->perform();
+    }
+
 }

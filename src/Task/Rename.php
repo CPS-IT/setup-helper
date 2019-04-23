@@ -38,7 +38,7 @@ class Rename extends AbstractTask implements TaskInterface
 
         foreach ($config as $oldName => $newName) {
             try {
-                $this->renameFile($oldName, $newName);
+                $this->process($oldName, $newName);
             } catch (\Exception $exception) {
                 $this->io->writeError($exception->getMessage());
             }
@@ -50,7 +50,7 @@ class Rename extends AbstractTask implements TaskInterface
      * @param string $newName
      * @throws \Naucon\File\Exception\FileException
      */
-    protected function renameFile(string $oldName, string $newName)
+    protected function process(string $oldName, string $newName)
     {
         $file = new  File($this->getWorkingDirectory() . $oldName);
         if (!$file->exists()) {
