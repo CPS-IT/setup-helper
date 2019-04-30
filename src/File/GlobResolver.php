@@ -19,7 +19,7 @@ namespace CPSIT\SetupHelper\File;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use CPSIT\Glob\Glob;
+use Symfony\Component\Finder\Finder;
 
 Class GlobResolver implements ResolverInterface
 {
@@ -50,15 +50,19 @@ Class GlobResolver implements ResolverInterface
      */
     public function resolve()
     {
-        return $this->globRecursive($this->pattern);
+        return $this->find('.',$this->pattern);
     }
 
-    protected function globRecursive($pattern, $flags = 0)
-    {
-        $files = Glob::glob($pattern, $flags);
-        foreach (Glob::glob(dirname($pattern) . '/*', GLOB_ONLYDIR | GLOB_NOSORT) as $dir) {
-            $files = array_merge($files, $this->globRecursive($dir . '/' . basename($pattern), $flags));
+    protected function find($path, $pattern){
+        $files = [];
+        $finder=new Finder();
+        $finder->files()->name(basename($pattern));
+        $finder->files()->in(dirname($pattern));
+
+        foreach ($finder as $file){
+            array_push($files, $file->getPathName());
         }
-        return $files;
+       return $files;
     }
+
 }
