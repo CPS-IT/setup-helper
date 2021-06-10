@@ -15,15 +15,15 @@
   },
   "require": {
     "php": "^7.3 || ^8.0",
-    "composer-plugin-api": "^1.1 || 2.0",
+    "composer-plugin-api": "^1.1 || ^2.1",
     "naucon/file": "^1.0",
     "symfony/filesystem": "^2.7 || ^3.0 || ^4.0",
     "webmozart/glob": "^4.3"
   },
   "require-dev": {
-    "roave/security-advisories": "dev-master",
+    "roave/security-advisories": "dev-latest",
     "phpunit/phpunit": "^6.5.0 || ^7.0.0",
-    "composer/composer": "^1.6.3",
+    "composer/composer": "^1.6.3 || ^2.1",
     "mikey179/vfsstream": "^1.6"
   },
   "autoload": {
