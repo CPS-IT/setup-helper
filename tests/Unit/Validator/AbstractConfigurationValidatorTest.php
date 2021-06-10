@@ -45,7 +45,7 @@ class AbstractConfigurationValidatorTest extends TestCase
      */
     protected $io;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->io = $this->getMockBuilder(IOInterface::class)

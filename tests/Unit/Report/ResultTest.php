@@ -1,6 +1,7 @@
 <?php
 
 namespace CPSIT\SetupHelper\Tests\Unit\Report;
+
 use CPSIT\SetupHelper\Report\Result;
 use CPSIT\SetupHelper\Report\ResultInterface;
 use PHPUnit\Framework\TestCase;
@@ -21,7 +22,6 @@ use PHPUnit\Framework\TestCase;
  * GNU General Public License for more details.
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 class ResultTest extends TestCase
 {
     /**
@@ -29,7 +29,7 @@ class ResultTest extends TestCase
      */
     protected $subject;
 
-    public function setUp()/* The :void return type declaration that should be here would cause a BC issue */
+    public function setUp(): void
     {
         $this->subject = new Result();
     }

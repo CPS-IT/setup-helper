@@ -53,7 +53,7 @@ class CopyTest extends TestCase
      */
     protected $configurationValidator;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->io = $this->getMockBuilder(IOInterface::class)

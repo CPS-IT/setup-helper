@@ -33,7 +33,7 @@ class FileSystemTraitTest extends TestCase
      */
     protected $subject;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->subject = $this->getMockBuilder(FileSystemTrait::class)

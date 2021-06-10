@@ -37,7 +37,7 @@ class MakeDirectoryTest extends TestCase
      */
     protected $io;
 
-    public function setUp()/* The :void return type declaration that should be here would cause a BC issue */
+    public function setUp(): void
     {
         parent::setUp();
         $this->io = $this->getMockBuilder(IOInterface::class)

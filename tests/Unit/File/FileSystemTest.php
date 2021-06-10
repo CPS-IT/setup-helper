@@ -46,7 +46,7 @@ class FileSystemTest extends TestCase
      */
     protected $processExecutor;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->symfonyFS = $this->getMockBuilder(SFS::class)
@@ -85,7 +85,7 @@ class FileSystemTest extends TestCase
         );
     }
 
-    public function wrappedMethodsDataProvider()
+    public function wrappedMethodsDataProvider(): array
     {
         return [
             // wrapper method, original method, arguments
@@ -113,7 +113,7 @@ class FileSystemTest extends TestCase
         string $expectedMethod,
         array $arguments,
         $expectedResult
-    )
+    ): void
     {
         $this->symfonyFS->expects($this->once())
             ->method($expectedMethod)

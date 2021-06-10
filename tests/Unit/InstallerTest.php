@@ -46,7 +46,7 @@ class InstallerTest extends TestCase
     protected $fileHandle;
 
 
-    public function setUp()/* The :void return type declaration that should be here would cause a BC issue */
+    public function setUp(): void
     {
         $this->subject = new Installer();
         $this->fileHandle = fopen($this->fileName, 'ab');
@@ -54,7 +54,7 @@ class InstallerTest extends TestCase
         fclose($this->fileHandle);
     }
 
-    public function tearDown()/* The :void return type declaration that should be here would cause a BC issue */
+    public function tearDown(): void
     {
         if (is_file($this->fileName)) {
             unlink($this->fileName);

@@ -43,7 +43,7 @@ class AbstractTaskTest extends TestCase
      */
     protected $config = ['foo'];
 
-    public function setUp()/* The :void return type declaration that should be here would cause a BC issue */
+    public function setUp(): void
     {
         parent::setUp();
         $this->io = $this->getMockBuilder(IOInterface::class)
@@ -94,7 +94,7 @@ class AbstractTaskTest extends TestCase
 
     public function testGetWorkingDirectoryReturnsWorkingDirectory()
     {
-        $expectedDirectory = getcwd() . File::PATH_SEPARATOR;
+        $expectedDirectory = getcwd() . '/'; //File::PATH_SEPARATOR;
         $this->assertSame(
             $expectedDirectory,
             $this->subject->getWorkingDirectory()

@@ -54,7 +54,7 @@ class SymlinkTest extends TestCase
      */
     protected $fileSystem;
 
-    public function setUp()/* The :void return type declaration that should be here would cause a BC issue */
+    public function setUp(): void
     {
         parent::setUp();
         vfsStreamWrapper::register();
