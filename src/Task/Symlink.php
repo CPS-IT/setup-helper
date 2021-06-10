@@ -67,7 +67,11 @@ class Symlink extends AbstractTask implements TaskInterface
         }
 
         if ($this->fileSystem->exists($link)) {
-            $explanation = is_link($link) ? ', referring to ' . $this->fileSystem->readlink($link) : ' as a file.';
+            $explanation = ' as a file.';
+            if (is_link($link)) {
+                $path = $this->fileSystem->readlink($link)? : '';
+                $explanation = ', referring to ' . $path;
+            }
             $message = sprintf(
                 TaskInterface::MESSAGE_SYMLINK_ALREADY_EXISTS,
                 $link, $explanation

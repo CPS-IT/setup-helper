@@ -55,7 +55,7 @@ class FileSearch implements SearchInterface
      * @param string $path
      * @return FileSearch
      */
-    public function setPath(string $path)
+    public function setPath(string $path): FileSearch
     {
         $this->path = $path;
 
@@ -77,7 +77,7 @@ class FileSearch implements SearchInterface
      * @param string $search
      * @return FileSearch
      */
-    public function setSearch(string $search)
+    public function setSearch(string $search): FileSearch
     {
         $this->search = $search;
         return $this;
@@ -99,7 +99,7 @@ class FileSearch implements SearchInterface
      * @param string $replace
      * @return FileSearch
      */
-    public function setReplace(string $replace)
+    public function setReplace(string $replace): FileSearch
     {
         $this->replace = $replace;
 

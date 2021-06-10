@@ -21,6 +21,9 @@ namespace CPSIT\SetupHelper\Report;
 
 class Error extends Result
 {
+    /**
+     * @var string
+     */
     protected $status = ResultInterface::STATUS_ERROR;
 
 }

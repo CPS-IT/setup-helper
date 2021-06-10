@@ -39,6 +39,8 @@ script:
   if [[ "$COVERAGE" == "1" ]]; then
     echo;
     echo "Running unit tests";
-    .build/bin/phpunit --colors -c tests/Build/UnitTests.xml tests/Unit/
+    .build/bin/phpunit --colors -c tests/Build/UnitTests.xml tests/Unit/;
+    echo;
+    echo "Scanning results for sonar";
     sonar-scanner -Dproject.settings=.sonar-project.properties
   fi

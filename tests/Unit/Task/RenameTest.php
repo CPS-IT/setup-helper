@@ -136,4 +136,30 @@ class RenameTest extends TestCase
             unlink($fixturePath . $newName);
         }
     }
+
+    public function testPerformWritesErrorForException(): void
+    {
+        $message = 'bar';
+        $mockException = new \Exception($message);
+        $oldName = 'foo.txt';
+        $newName = 'bar.txt';
+
+        $config = [
+            $oldName => $newName
+        ];
+        $this->subject = $this->getMockBuilder(Rename::class)
+            ->setMethods(['process'])
+            ->setConstructorArgs(
+                [$this->io, $config])
+            ->getMock();
+
+        $this->subject->method('process')
+            ->willThrowException($mockException);
+
+        $this->io->expects($this->once())
+            ->method('writeError')
+            ->with($message);
+
+        $this->subject->perform();
+    }
 }

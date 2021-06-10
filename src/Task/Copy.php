@@ -29,6 +29,9 @@ use CPSIT\SetupHelper\Validator\CopyTaskConfigurationValidator;
  */
 class Copy extends AbstractTask implements TaskInterface
 {
+    /**
+     * @var ConfigurationValidatorInterface
+     */
     protected $configurationValidator;
 
     public function __construct(
@@ -38,10 +41,7 @@ class Copy extends AbstractTask implements TaskInterface
         ConfigurationValidatorInterface $configurationValidator = null)
     {
         parent::__construct($IO, $config, $fileSystem);
-        if (null === $configurationValidator) {
-            $configurationValidator = new CopyTaskConfigurationValidator($this->io);
-        }
-        $this->configurationValidator = $configurationValidator;
+        $this->configurationValidator = $configurationValidator ?: new CopyTaskConfigurationValidator($this->io);
     }
 
     /**
@@ -60,14 +60,9 @@ class Copy extends AbstractTask implements TaskInterface
     }
 
     /**
-     * @return ConfigurationValidatorInterface|CopyTaskConfigurationValidator
+     * @param array $configuration
      */
-    public function getConfigurationValidator()
-    {
-        return $this->configurationValidator;
-    }
-
-    protected function process(array $configuration)
+    protected function process(array $configuration): void
     {
         foreach ($configuration as $source => $target) {
             if ($this->fileSystem->copy($source, $target)) {
@@ -82,4 +77,11 @@ class Copy extends AbstractTask implements TaskInterface
         }
     }
 
+    /**
+     * @return ConfigurationValidatorInterface
+     */
+    public function getConfigurationValidator(): ConfigurationValidatorInterface
+    {
+        return $this->configurationValidator;
+    }
 }

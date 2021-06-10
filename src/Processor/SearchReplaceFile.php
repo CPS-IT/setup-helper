@@ -37,11 +37,9 @@ class SearchReplaceFile
     protected $io;
 
     /**
-     * @var FileSearch
+     * @var SearchInterface
      */
     protected $fileSearch;
-
-    protected $files;
 
     /**
      * SearchReplaceFile constructor.
@@ -51,17 +49,14 @@ class SearchReplaceFile
     public function __construct(IOInterface $io, SearchInterface $search = null)
     {
         $this->io = $io;
-        if ($search instanceof FileSearch) {
-            $this->fileSearch = $search;
-        }
+        $this->fileSearch = $search ?: new FileSearch();
     }
 
     /**
-     *
      * @throws \Naucon\File\Exception\FileException
      * @throws \Naucon\File\Exception\FileWriterException
      */
-    public function process()
+    public function process(): void
     {
         $file = new File($this->fileSearch->getPath());
         if (!$file->exists()) {

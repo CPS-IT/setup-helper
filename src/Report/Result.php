@@ -24,8 +24,19 @@ namespace CPSIT\SetupHelper\Report;
  */
 class Result implements ResultInterface
 {
+    /**
+     * @var string
+     */
     protected $status = ResultInterface::STATUS_UNKNOWN;
+
+    /**
+     * @var string
+     */
     protected $message = ResultInterface::MESSAGE_UNDEFINED;
+
+    /**
+     * @var int
+     */
     protected $id = 0;
 
     /**

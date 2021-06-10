@@ -195,4 +195,31 @@ class SymlinkTest extends TestCase
 
         $this->subject->perform();
     }
+
+    public function testPerformWritesErrorForException(): void
+    {
+        $message = 'bar';
+        $mockException = new \Exception($message);
+        $source = 'foo.txt';
+        $target = 'bar';
+
+        $config = [
+            $source => $target
+        ];
+        $this->subject = $this->getMockBuilder(Symlink::class)
+            ->setMethods(['process'])
+            ->setConstructorArgs(
+                [$this->io, $config])
+            ->getMock();
+
+        $this->subject->method('process')
+            ->willThrowException($mockException);
+
+        $this->io->expects($this->once())
+            ->method('writeError')
+            ->with($message);
+
+        $this->subject->perform();
+    }
+
 }

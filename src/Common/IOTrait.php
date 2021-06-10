@@ -41,7 +41,7 @@ trait IOTrait
     /**
      * @param IOInterface $io
      */
-    public function setIo(IOInterface $io)
+    public function setIo(IOInterface $io): void
     {
         $this->io = $io;
     }

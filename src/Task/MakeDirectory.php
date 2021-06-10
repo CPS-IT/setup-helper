@@ -18,6 +18,7 @@ namespace CPSIT\SetupHelper\Task;
  * GNU General Public License for more details.
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 use Naucon\File\File;
 
 /**
@@ -34,30 +35,40 @@ class MakeDirectory extends AbstractTask implements TaskInterface
             );
         }
 
+        try {
+            $this->process($config);
+        } catch (\Exception $exception) {
+            $this->io->writeError($exception->getMessage());
+
+        }
+    }
+
+    /**
+     * @param array $config
+     * @throws \Naucon\File\Exception\FileException
+     */
+    protected function process(array $config): void
+    {
         foreach ($config as $folder) {
-            try {
-                $file = new File(
-                    $this->getWorkingDirectory() . $folder
+            $file = new File(
+                $this->getWorkingDirectory() . $folder
+            );
+            if ($file->exists()) {
+                $this->io->write(
+                    sprintf(
+                        TaskInterface::MESSAGE_FOLDER_ALREADY_EXISTS,
+                        $folder
+                    )
                 );
-                if ($file->exists()) {
-                    $this->io->write(
-                        sprintf(
-                            TaskInterface::MESSAGE_FOLDER_ALREADY_EXISTS,
-                            $folder
-                        )
-                    );
-                    continue;
-                }
-                if ($file->mkdirs()) {
-                    $this->io->write(
-                        sprintf(
-                            TaskInterface::MESSAGE_FOLDER_CREATED,
-                            $folder
-                        )
-                    );
-                }
-            } catch (\Exception $exception) {
-                $this->io->writeError($exception->getMessage());
+                continue;
+            }
+            if ($file->mkdirs()) {
+                $this->io->write(
+                    sprintf(
+                        TaskInterface::MESSAGE_FOLDER_CREATED,
+                        $folder
+                    )
+                );
             }
         }
     }
