@@ -14,11 +14,11 @@
     "bin-dir": ".build/bin"
   },
   "require": {
-    "php": "^7.1 || ^8.0.0",
-    "composer-plugin-api": "^1.0.0",
-    "naucon/file": "^1.1 || 2.0",
+    "php": "^7.3 || ^8.0",
+    "composer-plugin-api": "^1.1 || 2.0",
+    "naucon/file": "^1.0",
     "symfony/filesystem": "^2.7 || ^3.0 || ^4.0",
-    "webmozart/glob": "^4.4"
+    "webmozart/glob": "^4.3"
   },
   "require-dev": {
     "roave/security-advisories": "dev-master",
