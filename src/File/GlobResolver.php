@@ -19,7 +19,7 @@ namespace CPSIT\SetupHelper\File;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use CPSIT\Glob\Glob;
+use Webmozart\Glob\Glob;
 
 Class GlobResolver implements ResolverInterface
 {
