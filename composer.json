@@ -15,14 +15,14 @@
   },
   "require": {
     "php": "^7.3 || ^8.0",
-    "composer-plugin-api": "^1.1 || ^2.1",
+    "composer-plugin-api": "^1.1 || ^2.0",
     "naucon/file": "^1.0",
     "symfony/filesystem": "^2.7 || ^3.0 || ^4.0",
     "webmozart/glob": "^4.3"
   },
   "require-dev": {
     "roave/security-advisories": "dev-latest",
-    "phpunit/phpunit": "^6.5.0 || ^7.0.0",
+    "phpunit/phpunit": "^8.5 || ^9.5",
     "composer/composer": "^1.6.3 || ^2.1",
     "mikey179/vfsstream": "^1.6"
   },
