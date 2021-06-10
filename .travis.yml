@@ -5,11 +5,11 @@ sudo: false
 matrix:
   fast_finish: true
   include:
-    - php: 7.1
-    - php: 7.2
-      env: COVERAGE=1
     - php: 7.3
       env: COMPOSER_PARAMS=--ignore-platform-reqs
+    - php: 7.4
+      env: COVERAGE=1
+    - php: 8.0
 
 env:
   global:
