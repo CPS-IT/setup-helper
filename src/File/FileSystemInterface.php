@@ -38,7 +38,7 @@ interface FileSystemInterface
      * @param string $targetFile The target filename
      * @return bool
      */
-    public function copy($originFile, $targetFile): bool ;
+    public function copy(string $originFile, string $targetFile): bool ;
 
     /**
      * Creates a directory recursively.
@@ -72,11 +72,11 @@ interface FileSystemInterface
     /**
      * Removes files or directories.
      *
-     * @param string|iterable $files A filename, an array of files, or a \Traversable instance to remove
+     * @param string $file A filename or directory to remove
      *
      * @throws IOException When removal fails
      */
-    public function remove($files);
+    public function remove(string $file);
 
     /**
      * Change mode for an array of files or directories.
@@ -117,9 +117,9 @@ interface FileSystemInterface
      *
      * @param string $origin The origin filename or directory
      * @param string $target The new filename or directory
-     * @return
+     * @return void
      */
-    public function rename($origin, $target);
+    public function rename(string $origin, string $target);
 
     /**
      * Creates a symbolic link or copy a directory.
@@ -168,5 +168,5 @@ interface FileSystemInterface
      *
      * @return bool
      */
-    public function isAbsolutePath($file);
+    public function isAbsolutePath(string $file);
 }
