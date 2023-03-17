@@ -15,7 +15,8 @@
   },
   "require": {
     "php": "^7.3 || ^8.0",
-    "composer-plugin-api": "^1.1 || ^2.0",
+    "composer": ">=2.3.0",
+    "composer-plugin-api": ">=2.2.0",
     "naucon/file": "^1.0",
     "symfony/filesystem": "^5.0",
     "webmozart/glob": "^4.3"
