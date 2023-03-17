@@ -1,0 +1,57 @@
+name: Tests
+on: [ push, pull_request ]
+
+jobs:
+  tests:
+    name: PHP ${{ matrix.php-version }} & TYPO3 ${{ matrix.typo3-version }}
+    runs-on: ubuntu-18.04
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - php-version: 8.1
+            composer-version: v2
+          - php-version: 8.2
+            composer-version: v2
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      # Prepare environment
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          tools: composer:${{matrix.composer-version}}
+          coverage: xdebug
+
+      # Define Composer cache
+      - name: Get Composer cache directory
+        id: composer-cache
+        run: |
+          echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - name: Define Composer cache
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: tests-php-${{ matrix.php-version }}-typo3-${{ matrix.typo3-version }}
+          restore-keys: |
+            tests-php-${{ matrix.php-version }}-typo3-
+
+      # Install dependencies
+      - name: Install Composer dependencies
+        run: composer install
+
+      # Run tests
+      - name: Run tests
+        run: |
+          .build/bin/phpunit --colors -c tests/Build/UnitTests.xml tests/Unit/;
+
+      # Report coverage
+      - name: Run SonarCloud scan
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        if: ${{ matrix.coverage }}
